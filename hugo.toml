@@ -2,3 +2,7 @@ baseURL = "https://blog.luxrime.top/"
 languageCode = "zh-cn"
 title = "RookieIO 的博客"
 theme = "ananke"
+
+[params]
+  custom_css = ["css/custom.css"]
+
