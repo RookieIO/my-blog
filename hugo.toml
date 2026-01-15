@@ -1,8 +1,26 @@
-baseURL = "https://blog.luxrime.top/"
-languageCode = "zh-cn"
-title = "RookieIO 的博客"
-theme = "ananke"
+baseURL = 'https://blog.luxrime.top/'
+languageCode = 'zh-cn'
+title = "RookieIO's Tech Lab"
+theme = "PaperMod"
 
 [params]
-  custom_css = ["css/custom.css"]
+    defaultTheme = "auto" # 自动跟随系统切换黑/白模式
+    ShowReadingTime = true # 显示阅读时间
+    ShowShareButtons = false # 只有国内也没人用国外的分享，关掉清爽
+    ShowPostNavLinks = true # 显示上一篇/下一篇
+    
+    [params.homeInfoParams]
+        Title = "Hi there 👋"
+        Content = "欢迎来到我的 Arch Linux 学习笔记"
 
+    # 顶部导航栏
+    [[menu.main]]
+        identifier = "posts"
+        name = "文章"
+        url = "/posts/"
+        weight = 10
+    [[menu.main]]
+        identifier = "search"
+        name = "搜索"
+        url = "/search/"
+        weight = 20

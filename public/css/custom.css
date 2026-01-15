@@ -1,0 +1,63 @@
+/* ---------------------------------- */
+/* 我的自定义博客样式         */
+/* ---------------------------------- */
+
+/* 缩小文章正文里的 H2 标题 (比如 "一、基础搜索语法") */
+.post-content h2 {
+    font-size: 1.75rem;     /* 把字体改小 (原先非常大) */
+    margin-top: 2.5em;      /* 增加和上一段的距离 */
+    margin-bottom: 1em;     /* 增加和下一段的距离 */
+    padding-bottom: 0.25em; /* 给标题加个下划线 */
+    border-bottom: 2px solid #eee;
+}
+
+/* 缩小文章正文里的 H3 标题 (比如 "1. 关键词搜索") */
+.post-content h3 {
+    font-size: 1.35rem;     /* 把字体改小 */
+    margin-top: 2em;
+}
+
+/* 调整列表的间距，让它不那么挤 */
+.post-content ul,
+.post-content ol {
+    margin-bottom: 1.5em; /* 增加列表和下面内容的间距 */
+}
+
+/* 调整代码块的样式，更好看 */
+.post-content code {
+    font-size: 0.9em; /* 代码字体稍微小一点 */
+    background-color: #f6f8fa; /* 浅灰色背景 */
+    padding: 0.2em 0.4em;
+    border-radius: 6px;
+}
+
+.post-content pre code {
+    background-color: transparent; /* 代码块里的 code 标签背景设为透明 */
+    padding: 0;
+}
+
+.post-content pre {
+    background-color: #f6f8fa; /* 代码块使用浅灰色背景 */
+    padding: 1em;
+    border-radius: 6px;
+    overflow-x: auto; /* 允许代码横向滚动 */
+}
+
+/* 修正表格样式 */
+.post-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1.5em;
+}
+
+.post-content th,
+.post-content td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.post-content th {
+    background-color: #f9f9f9;
+    font-weight: bold;
+}

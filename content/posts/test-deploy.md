@@ -1,7 +1,7 @@
 +++
 date = '2026-01-15T09:02:47+08:00'
 draft = false
-title = 'Test Deploy'
+title = "Firewalld 配置指南"
 +++
 # 🔥 Firewalld 权威参考手册 (Arch Linux 版)
 

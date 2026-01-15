@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Posts on RookieIO&#39;s Tech Lab</title>
+    <link>http://localhost:1313/posts/</link>
+    <description>Recent content in Posts on RookieIO&#39;s Tech Lab</description>
+    <generator>Hugo -- 0.154.5</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Thu, 15 Jan 2026 09:02:47 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Test Deploy</title>
+      <link>http://localhost:1313/posts/test-deploy/</link>
+      <pubDate>Thu, 15 Jan 2026 09:02:47 +0800</pubDate>
+      <guid>http://localhost:1313/posts/test-deploy/</guid>
+      <description>&lt;h1 id=&#34;-firewalld-权威参考手册-arch-linux-版&#34;&gt;🔥 Firewalld 权威参考手册 (Arch Linux 版)&lt;/h1&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;属性&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;说明&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;适用系统&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;Arch Linux, CentOS, Fedora, RHEL, openSUSE&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;底层后端&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;nftables (新版) / iptables (旧版)&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;核心工具&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;code&gt;firewall-cmd&lt;/code&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;配置文件路径&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;code&gt;/etc/firewalld/&lt;/code&gt; (用户配置), &lt;code&gt;/usr/lib/firewalld/&lt;/code&gt; (默认配置)&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;文档版本&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;v2.0 (终极详细版)&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;-1-核心设计哲学-必读&#34;&gt;📖 1. 核心设计哲学 (必读)&lt;/h2&gt;
+&lt;p&gt;在操作之前，必须理解 Firewalld 的两个核心概念，否则你的配置可能会重启失效，或者逻辑混乱。&lt;/p&gt;
+&lt;h3 id=&#34;11-运行时-runtime-vs-永久-permanent&#34;&gt;1.1 运行时 (Runtime) vs 永久 (Permanent)&lt;/h3&gt;
+&lt;p&gt;Firewalld 的配置分两层：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Runtime (内存中)&lt;/strong&gt;: 修改立刻生效，但&lt;strong&gt;重启后丢失&lt;/strong&gt;。用于测试规则。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Permanent (硬盘中)&lt;/strong&gt;: 修改写入配置文件，&lt;strong&gt;重载 (Reload) 后才生效&lt;/strong&gt;。用于持久化。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;💡 最佳实践&lt;/strong&gt;: 永远使用 &lt;code&gt;--permanent&lt;/code&gt; 参数，然后立即运行 &lt;code&gt;--reload&lt;/code&gt;。除非你只是想临时测试一下怕把自己锁在外面。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&#34;12-区域-zones&#34;&gt;1.2 区域 (Zones)&lt;/h3&gt;
+&lt;p&gt;Firewalld 将网络划分为不同的“信任等级”。网卡 (Interface) 必须绑定在某个区域里。&lt;/p&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;区域 (Zone)&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;信任度&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;默认行为&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;典型应用场景&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;drop&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;0% (黑洞)&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;丢弃所有入站包，&lt;strong&gt;不给任何回应&lt;/strong&gt;。&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;遭受攻击时 / 极高安全环境。&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;block&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;10% (拒绝)&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;拒绝所有入站包，但会回复 &lt;code&gt;icmp-prohibited&lt;/code&gt; (告诉对方被拒了)。&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;调试网络连通性时。&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;public&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;30% (默认)&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;仅允许显式放行的端口 (如 ssh, dhcpv6-client)。&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;公共 Wi-Fi / 默认对外网卡。&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;external&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;40%&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;类似 public，但默认开启 &lt;strong&gt;IP 伪装 (Masquerade)&lt;/strong&gt;。&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;路由器 WAN 口 / 软路由出口。&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;home&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;70%&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;信任大多设备，开放 mdns, ssh, samba。&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;家庭局域网。&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;work&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;60%&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;类似 home，但限制更严。&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;公司内网。&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;trusted&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;100%&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;允许所有流量&lt;/strong&gt; (无防火墙限制)。&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;VPN 虚拟网卡 (tun0) / 容器内部通信。&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;-2-服务生命周期管理&#34;&gt;🛠 2. 服务生命周期管理&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 启动防火墙&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo systemctl start firewalld
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 设置开机自启&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo systemctl enable firewalld
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 停止防火墙 (调试连通性第一步)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo systemctl stop firewalld
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 彻底禁用 (防止开机自启)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo systemctl disable firewalld
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 检查运行状态 (Running / Not running)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo firewall-cmd --state
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 重新加载配置 (修改 Permanent 后必须执行！)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo firewall-cmd --reload
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;-3-信息查看与审计-information&#34;&gt;🔍 3. 信息查看与审计 (Information)&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;在修改之前，先学会怎么“看”。
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 1. 查看默认区域的所有规则 (最常用)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo firewall-cmd --list-all
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 2. 查看所有区域的详细规则 (信息量极大)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo firewall-cmd --list-all-zones
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 3. 查看当前活跃的区域 (查看网卡绑定在哪)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo firewall-cmd --get-active-zones
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 输出示例:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# public&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#   interfaces: wlan0 eth0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# trusted&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;#   interfaces: tun0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;# 4. 查看系统预定义了哪些服务 (如 ssh, http, docker-registry 等)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;sudo firewall-cmd --get-services
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;-4-端口与服务管理-常规操作&#34;&gt;⚙️ 4. 端口与服务管理 (常规操作)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;场景&lt;/strong&gt;: 开放 Web 服务、远程桌面、文件共享。 &lt;em&gt;(注: 以下命令默认省略 &lt;code&gt;sudo&lt;/code&gt;，实际使用请加上)&lt;/em&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>GitHub使用方法</title>
+      <link>http://localhost:1313/posts/github%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</link>
+      <pubDate>Tue, 18 Nov 2025 13:36:41 +0800</pubDate>
+      <guid>http://localhost:1313/posts/github%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</guid>
+      <description>&lt;h2 id=&#34;github-搜索语法完全指南含实用示例&#34;&gt;GitHub 搜索语法完全指南（含实用示例）&lt;/h2&gt;
+&lt;h2 id=&#34;一基础搜索语法&#34;&gt;一、基础搜索语法&lt;/h2&gt;
+&lt;h3 id=&#34;1-关键词搜索&#34;&gt;1. 关键词搜索&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;python&lt;/code&gt;：搜索所有包含 &amp;ldquo;python&amp;rdquo; 的仓库/代码&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;&amp;quot;machine learning&amp;quot;&lt;/code&gt;：精确匹配短语 &amp;ldquo;machine learning&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;docker -container&lt;/code&gt;：搜索包含 docker 但不含 container 的结果&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-范围限定&#34;&gt;2. 范围限定&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;in:name flask&lt;/code&gt;：只在仓库名称中搜索 &amp;ldquo;flask&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;in:description web framework&lt;/code&gt;：只在仓库描述中搜索&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;in:readme &amp;quot;quick start&amp;quot;&lt;/code&gt;：只在 README 文件中搜索&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;repo:vuejs/vue&lt;/code&gt;：仅在指定仓库中搜索&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;二仓库搜索技巧&#34;&gt;二、仓库搜索技巧&lt;/h2&gt;
+&lt;h3 id=&#34;1-属性筛选&#34;&gt;1. 属性筛选&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;stars:&amp;gt;1000&lt;/code&gt;：星标超过 1000 的仓库&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;forks:&amp;gt;500&lt;/code&gt;：Fork 数超过 500 的仓库&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;size:&amp;gt;10000&lt;/code&gt;：大小超过 10MB 的仓库&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;license:mit&lt;/code&gt;：MIT 许可证的仓库&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;archived:false&lt;/code&gt;：未归档的活跃仓库&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;2-时间范围筛选&#34;&gt;2. 时间范围筛选&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;pushed:&amp;gt;2024-01-01&lt;/code&gt;：2024 年后更新过的仓库&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;created:2023-01-01..2023-12-31&lt;/code&gt;：2023 年创建的仓库&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;updated:&amp;gt;2024-06-01&lt;/code&gt;：最近 30 天更新的仓库&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;3-实用案例&#34;&gt;3. 实用案例&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;查找Python高星项目&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;in:name python stars:&amp;gt;5000
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;查找近半年更新的AI项目&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;in:description AI pushed:&amp;gt;2024-01-01
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;查找MIT许可的Web框架&lt;/strong&gt;&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Linux 内核 (Kernel) 编译与管理详解</title>
+      <link>http://localhost:1313/posts/linux-kernel/</link>
+      <pubDate>Wed, 12 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/linux-kernel/</guid>
+      <description>一篇关于 Linux 内核的详细笔记，涵盖从获取源代码、配置、编译、安装到管理内核模块的完整流程。</description>
+    </item>
+    <item>
+      <title>Linux中文件系统各个目录的作用</title>
+      <link>http://localhost:1313/posts/my-first-post/</link>
+      <pubDate>Wed, 12 Nov 2025 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/posts/my-first-post/</guid>
+      <description>详细解释 Linux 文件系统中 /boot, /etc, /bin, /usr, /var 等核心目录的用途和区别。</description>
+    </item>
+  </channel>
+</rss>
