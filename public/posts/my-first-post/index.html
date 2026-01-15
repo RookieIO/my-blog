@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto" data-theme="auto">
 
-<head><meta charset="utf-8">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="noindex, nofollow">
 <title>Linux中文件系统各个目录的作用 | RookieIO&#39;s Tech Lab</title>
 <meta name="keywords" content="">
 <meta name="description" content="详细解释 Linux 文件系统中 /boot, /etc, /bin, /usr, /var 等核心目录的用途和区别。">
 <meta name="author" content="">
-<link rel="canonical" href="https://blog.luxrime.top/posts/my-first-post/">
+<link rel="canonical" href="http://localhost:1313/posts/my-first-post/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.00b861ce567f308b3d720986b5361bf4f3df0c2c45fa85c2c6c5e7d8cbeff271.css" integrity="sha256-ALhhzlZ/MIs9cgmGtTYb9PPfDCxF&#43;oXCxsXn2Mvv8nE=" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://blog.luxrime.top/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://blog.luxrime.top/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://blog.luxrime.top/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://blog.luxrime.top/apple-touch-icon.png">
-<link rel="mask-icon" href="https://blog.luxrime.top/safari-pinned-tab.svg">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="https://blog.luxrime.top/posts/my-first-post/">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/my-first-post/">
 <noscript>
     <style>
         #theme-toggle,
@@ -70,75 +70,13 @@
         document.querySelector("html").dataset.theme = 'light';
     }
 
-</script><meta property="og:url" content="https://blog.luxrime.top/posts/my-first-post/">
-  <meta property="og:site_name" content="RookieIO&#39;s Tech Lab">
-  <meta property="og:title" content="Linux中文件系统各个目录的作用">
-  <meta property="og:description" content="详细解释 Linux 文件系统中 /boot, /etc, /bin, /usr, /var 等核心目录的用途和区别。">
-  <meta property="og:locale" content="zh-cn">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2025-11-12T00:00:00+00:00">
-    <meta property="article:modified_time" content="2025-11-12T00:00:00+00:00">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Linux中文件系统各个目录的作用">
-<meta name="twitter:description" content="详细解释 Linux 文件系统中 /boot, /etc, /bin, /usr, /var 等核心目录的用途和区别。">
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "笔记",
-      "item": "https://blog.luxrime.top/posts/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "Linux中文件系统各个目录的作用",
-      "item": "https://blog.luxrime.top/posts/my-first-post/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "Linux中文件系统各个目录的作用",
-  "name": "Linux中文件系统各个目录的作用",
-  "description": "详细解释 Linux 文件系统中 /boot, /etc, /bin, /usr, /var 等核心目录的用途和区别。",
-  "keywords": [
-    
-  ],
-  "articleBody": "核心目录结构 / (根目录) 包含了几乎所有的文件目录。相当于中央系统。\n/boot (引导程序、内核等存放的目录) 这个目录包括了在引导过程中所必需的文件。在最开始的启动阶段，通过引导程序将内核加载到内存，完成内核的启动（这个时候，虚拟文件系统还不存在，加载的内核虽然是从硬盘读取的，但是没经过 Linux 的虚拟文件系统，这是比较底层的东西来实现的）。\n然后内核自己创建好虚拟文件系统，并且从虚拟文件系统的其他子目录中（例如 /sbin 和 /etc）加载需要在开机启动的其他程序或者服务或者特定的动作（部分可以由用户自己在相应的目录中修改相应的文件来配制）。\n如果我们的机器中包含多个操作系统，那么可以通过修改这个目录中的某个配置文件（例如 grub.conf）来调整启动的默认操作系统、系统启动的选择菜单，以及启动延迟等参数。\n/sbin (超级用户可以使用的命令的存放目录) 存放大多涉及系统管理的命令（例如引导系统的 init 程序），是超级权限用户 root 的可执行命令存放地，普通用户无权限执行这个目录下的命令（但是有时普通用户也可能会用到）。\n我们要记住，凡是目录 sbin 中包含的都是 root 权限才能执行的。\n/bin (普通用户可以使用的命令的存放目录) 系统所需要的那些命令位于此目录，比如 ls、cp、mkdir 等命令；类似的目录还 /usr/bin，/usr/local/bin 等等。这个目录中的文件都是可执行的、普通用户都可以使用的命令。作为基础系统所需要的最基础的命令就是放在这里。\n/lib (根目录下的所有程序的共享库目录) 此目录下包含系统引导和在根用户执行命令时候所必需用到的共享库。做个不太好但是比较形象的比喻，有点类似于 Windows 上面的 system32 目录。\n理论上，这里存放的文件应该是 /bin 目录下程序所需要的库文件的存放地，也不排除一些例外的情况。类似的目录还 /usr/lib，/usr/local/lib 等等。\n/dev (设备文件目录) 在 Linux 中设备都是以文件形式出现，这里的设备可以是硬盘，键盘，鼠标，网卡，终端等设备，通过访问这些文件可以访问到相应的设备。\n设备文件可以使用 mknod 命令来创建；而为了将对这些设备文件的访问转化为对设备的访问，需要向相应的设备提供设备驱动模块（一般将设备驱动编译之后，生成的结果是一个 *.ko 类型的二进制文件，在内核启动之后，再通过 insmod 等命令加载相应的设备驱动之后，我们就可以通过设备文件来访问设备了）。\n一般来说，想要 Linux 系统支持某个设备，需要相应的硬件设备、支持硬件的驱动模块，以及相应的设备文件。\n/home (普通用户的家目录) 在 Linux 机器上，用户主目录通常直接或间接地置在此目录下。其结构通常由本地机的管理员来决定。\n通常而言，系统的每个用户都有自己的家目录，目录以用户名作为名字存放在 /home 下面（例如 josonlee 用户，其家目录的名字为 /home/josonlee）。该目录中保存了绝大多数的用户文件 (用户自己的配置文件、定制文件、文档、数据等)。\n/root (用户 root 的 $HOME 目录) 系统管理员 (就是 root 用户或超级用户) 的主目录比较特殊，不存放在 /home 中，而是直接放在 /root 目录下了。\n/etc (全局的配置文件存放目录) 系统和程序一般都可以通过修改相应的配置文件，来进行配置。例如，要配置系统开机的时候启动那些程序，配置某个程序启动的时候显示什么样的风格等等。通常这些配置文件都集中存放在 /etc 目录中，所以想要配置什么东西的话，可以在 /etc 下面寻找我们可能需要修改的文件。\n一些重要的 /etc 子文件或目录：\n/etc/rc 或 /etc/rc.d 或 /etc/rc?.d: 启动、或改变运行级时运行的脚本或脚本的目录。 /etc/passwd: 用户数据库，其中的域给出了用户名、真实姓名、用户起始目录、加密口令和用户的其他信息。 /etc/fdprm: 软盘参数表，用以说明不同的软盘格式。可用 setfdprm 进行设置。 /etc/fstab: 指定启动时需要自动安装的文件系统列表。也包括用 swapon -a 启用的 swap 区的信息。 /etc/group: 类似 /etc/passwd ，但说明的不是用户信息而是组的信息。 /etc/inittab: init 的配置文件。 /etc/issue: 包括用户在登录提示符前的输出信息。通常包括系统的一段短说明或欢迎信息。 /etc/magic: file 命令的配置文件。包含不同文件格式的说明，file 基于它猜测文件类型。 /etc/motd: (message of the day) 用户成功登录后自动输出。常用于通告信息，如计划关机时间的警告等。 /etc/mtab: 当前安装的文件系统列表。由脚本(script)初始化，并由 mount 命令自动更新。 /etc/shadow: 在安装了影子(shadow)口令软件的系统上的影子口令文件，只对 root 可读，增加了系统的安全性。 /etc/login.defs: login 命令的配置文件。 /etc/printcap: 类似 /etc/termcap ，但针对打印机。 /etc/profile, /etc/csh.login, /etc/csh.cshrc: 登录或启动时 bourne 或 c shells 执行的文件。允许系统管理员为所有用户建立全局缺省环境。 /etc/securetty: 确认安全终端，即哪个终端允许超级用户(root)登录。 /etc/shells: 列出可以使用的 shell。chsh 命令允许用户在本文件指定范围内改变登录的 shell。 /etc/termcap: 终端性能数据库。说明不同的终端用什么“转义序列”控制。 /usr (包含了命令、库文件和在通常操作中不会修改的文件) 这个目录对于系统来说也是一个非常重要的目录，其地位类似 Windows 上面的 Program Files 目录（安装程序的时候，默认就是安装在此文件内部某个子文件夹内）。\n输入命令后系统默认执行 /usr/bin 下的程序（当然，前提是这个目录的路径已经被添加到了系统的环境变量中）。此目录通常也会挂载一个独立的磁盘分区，它应保存共享只读类文件，这样它可以被运行 Linux 的不同主机挂载。\n/usr/lib: 目标库文件，包括动态连接库加上一些通常不是直接调用的可执行文件的存放位置。功能类似 /lib 目录。 /usr/bin: 一般使用者使用并且不是系统自检等所必需可执行文件的目录。 /usr/sbin: 管理员使用的非系统必须的可执行文件存放目录。 /usr/share: 存放共享文件的目录。保存了同一个操作系统在不同构架下工作时特定应用程序的共享数据(例如程序文档信息)。 /usr/include: C 程序语言编译使用的头文件。 /usr/local: 安装本地程序的一般默认路径。当我们下载一个程序源代码，编译并且安装的时候，如果不特别指定安装的程序路径，那么默认会将程序相关的文件安装到这个目录的对应目录下。 /proc (特殊文件目录) 这个目录采用一种特殊的 proc 文件系统格式。其中包含了全部虚拟文件。它们并不保存在磁盘中，也不占据磁盘空间。当您查看它们时，您实际上看到的是内存里的信息，这些文件助于我们了解系统内部信息。\n例如：\n/proc/1: 关于进程 1 的信息目录。每个进程在 /proc 下一个名为其进程号的目录。 /proc/cpuinfo: 处理器信息，如类型、制造商、型号和性能。 /proc/devices: 当前运行的核心配置的设备驱动的列表。 /proc/dma: 显示当前使用的 DMA 通道。 /proc/filesystems: 核心配置的文件系统。 /proc/interrupts: 显示使用的中断。 /proc/ioports: 当前使用的 I/O 端口。 /proc/kcore: 系统物理内存映象。 /proc/kmsg: 核心输出的消息。也被送到 syslog。 /proc/ksyms: 核心符号表。 /proc/loadavg: 系统”平均负载”。 /proc/meminfo: 存储器使用信息，包括物理内存和 swap。 /proc/modules: 当前加载了哪些核心模块。 /proc/net: 网络协议状态信息。 /proc/self: 到查看 /proc 的程序的进程目录的符号连接。 /proc/stat: 系统的不同状态。 /proc/uptime: 系统启动的时间长度。 /proc/version: 核心版本。 /opt (可选的文件目录) 这个目录表示的是可选的意思，一些自定义软件包或者第三方工具，就可以安装在这里。\n/mnt (临时挂载目录) 这个目录一般是用于存放挂载储存设备的挂载目录的，比如磁盘，光驱，网络文件系统等。当我们需要挂载某个磁盘设备的时候，可以把磁盘设备挂载到这个目录上去，这样我们可以直接通过访问这个目录来访问那个磁盘了。\n/media (挂载的媒体设备目录) 挂载的媒体设备目录，一般外部设备挂载到这里，例如 cdrom 等。比如我们插入一个 U 盘，我们一般会发现，Linux 自动在这个目录下建立一个 disk 目录，然后把 U 盘挂载到这个 disk 目录上，通过访问这个 disk 来访问 U 盘。\n/var (内容经常变化的目录) 此目录下文件的大小可能会改变，如缓冲文件、日志文件 (/var/log)、缓存文件等一般都存放在这里。\n/tmp (临时文件目录) 该目录存放系统中的一些临时文件，文件可能会被系统自动清空。\n/lost+found (恢复文件存放的位置) 当系统崩溃的时候，在系统修复过程中需要恢复的文件，可能就会在这里被找到了，这个目录一般为空。\n容易混淆的目录 /bin, /sbin 与 /usr/bin, /usr/sbin /bin 一般存放对于用户和系统来说“必须”的程序（二进制文件）。 /sbin 一般存放用于系统管理的“必需”的程序（二进制文件）。\n/usr/bin 一般存放的只是对用户和系统来说“不是必需的”程序（二进制文件）。 /usr/sbin 一般存放用于系统管理的“不是必需的”程序（二进制文件）。\n/lib 与 /usr/lib /lib 一般存放对于用户和系统来说“必须”的库（二进制文件）。 /usr/lib 一般存放的只是对用户和系统来说“不是必需的”库（二进制文件）。\n应用数据存放在哪？ (此部分以 deepin 系统为例)\ndeepin 系统中应用的数据主要存放在 ~/.config/ 路径下，开发者可以将应用的配置文件、缓存文件以及其它数据文件存放在该路径下。常见的路径格式为 ~/.config/\u003c开发者名称或公司名称\u003e/\u003c应用名称\u003e/ 或 ~/.config/\u003c应用名称\u003e/。\n桌面实际上也是一个文件夹，将一个可执行文件的发送到桌面的过程实际上是创建这个可执行文件的 .desktop 文件并将这个 .desktop 文件移动至 ~/Desktop 路径下的。\n",
-  "wordCount" : "324",
-  "inLanguage": "en",
-  "datePublished": "2025-11-12T00:00:00Z",
-  "dateModified": "2025-11-12T00:00:00Z",
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://blog.luxrime.top/posts/my-first-post/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "RookieIO's Tech Lab",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://blog.luxrime.top/favicon.ico"
-    }
-  }
-}
 </script>
 </head>
 <body id="top">
     <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="https://blog.luxrime.top/" accesskey="h" title="RookieIO&#39;s Tech Lab (Alt + H)">RookieIO&#39;s Tech Lab</a>
+            <a href="http://localhost:1313/" accesskey="h" title="RookieIO&#39;s Tech Lab (Alt + H)">RookieIO&#39;s Tech Lab</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -164,12 +102,12 @@
         </div>
         <ul id="menu">
             <li>
-                <a href="https://blog.luxrime.top/posts/" title="文章">
+                <a href="http://localhost:1313/posts/" title="文章">
                     <span>文章</span>
                 </a>
             </li>
             <li>
-                <a href="https://blog.luxrime.top/search/" title="搜索">
+                <a href="http://localhost:1313/search/" title="搜索">
                     <span>搜索</span>
                 </a>
             </li>
@@ -312,15 +250,10 @@
     <ul class="post-tags">
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://blog.luxrime.top/posts/github%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/">
+  <a class="prev" href="http://localhost:1313/posts/github%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/">
     <span class="title">« Prev</span>
     <br>
     <span>GitHub 使用方法</span>
-  </a>
-  <a class="next" href="https://blog.luxrime.top/posts/archlinux_install/">
-    <span class="title">Next »</span>
-    <br>
-    <span></span>
   </a>
 </nav>
 
@@ -329,7 +262,7 @@
     </main>
     
 <footer class="footer">
-        <span>&copy; 2026 <a href="https://blog.luxrime.top/">RookieIO&#39;s Tech Lab</a></span> · 
+        <span>&copy; 2026 <a href="http://localhost:1313/">RookieIO&#39;s Tech Lab</a></span> · 
 
     <span>
         Powered by

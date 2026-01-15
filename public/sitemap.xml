@@ -2,38 +2,51 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://blog.luxrime.top/posts/pacman_qperations/</loc>
+    <loc>http://localhost:1313/tags/arch-linux/</loc>
+    <lastmod>2026-01-15T13:00:00+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/archlinux_install/</loc>
+    <lastmod>2026-01-15T13:00:00+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/installation/</loc>
+    <lastmod>2026-01-15T13:00:00+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/kde/</loc>
+    <lastmod>2026-01-15T13:00:00+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/linux/</loc>
+    <lastmod>2026-01-15T13:00:00+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/</loc>
+    <lastmod>2026-01-15T13:00:00+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/tags/</loc>
+    <lastmod>2026-01-15T13:00:00+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/</loc>
+    <lastmod>2026-01-15T13:00:00+08:00</lastmod>
+  </url><url>
+    <loc>http://localhost:1313/posts/pacman_qperations/</loc>
     <lastmod>2026-01-15T11:57:29+08:00</lastmod>
   </url><url>
-    <loc>https://blog.luxrime.top/</loc>
-    <lastmod>2026-01-15T11:57:29+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.luxrime.top/posts/</loc>
-    <lastmod>2026-01-15T11:57:29+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.luxrime.top/posts/test-deploy/</loc>
+    <loc>http://localhost:1313/posts/test-deploy/</loc>
     <lastmod>2026-01-15T09:02:47+08:00</lastmod>
   </url><url>
-    <loc>https://blog.luxrime.top/tags/github/</loc>
+    <loc>http://localhost:1313/tags/github/</loc>
     <lastmod>2025-11-18T13:36:41+08:00</lastmod>
   </url><url>
-    <loc>https://blog.luxrime.top/posts/github%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</loc>
+    <loc>http://localhost:1313/posts/github%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</loc>
     <lastmod>2025-11-18T13:36:41+08:00</lastmod>
   </url><url>
-    <loc>https://blog.luxrime.top/tags/</loc>
+    <loc>http://localhost:1313/tags/tools/</loc>
     <lastmod>2025-11-18T13:36:41+08:00</lastmod>
   </url><url>
-    <loc>https://blog.luxrime.top/tags/tools/</loc>
+    <loc>http://localhost:1313/tags/tutorial/</loc>
     <lastmod>2025-11-18T13:36:41+08:00</lastmod>
   </url><url>
-    <loc>https://blog.luxrime.top/tags/tutorial/</loc>
-    <lastmod>2025-11-18T13:36:41+08:00</lastmod>
-  </url><url>
-    <loc>https://blog.luxrime.top/posts/my-first-post/</loc>
+    <loc>http://localhost:1313/posts/my-first-post/</loc>
     <lastmod>2025-11-12T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://blog.luxrime.top/posts/archlinux_install/</loc>
-  </url><url>
-    <loc>https://blog.luxrime.top/categories/</loc>
+    <loc>http://localhost:1313/categories/</loc>
   </url>
 </urlset>

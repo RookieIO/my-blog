@@ -1,51 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto" data-theme="auto">
 
-<head><meta charset="utf-8">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
-<title>RookieIO&#39;s Tech Lab</title>
-<meta name="keywords" content="">
-<meta name="description" content="
-title: &ldquo;Arch Linux 安装指南：从系统构建到图形环境&rdquo;
-date: 2026-01-15T15:30:00&#43;08:00
-draft: false
-description: &ldquo;Arch Linux 安装教程。&rdquo;
-tags: [&ldquo;Linux&rdquo;, &ldquo;Arch Linux&rdquo;, &ldquo;KDE&rdquo;, &ldquo;Installation&rdquo;]
-
-🛠 Arch Linux 权威安装指南 (完整版)
-欢迎来到 Arch Linux 的世界。本手册将带你完成从基础系统联网、分区到安装图形界面（GUI）及常用软件的全过程。
-
-1. 环境准备与联网
-在启动后的 Live 环境中，首先需要确保网络通畅。
-# 1. 如果是无线网络，使用 iwd 联网
-iwctl                                      # 进入交互式联网工具
-# 在 iwctl 界面中依次执行：
-# station wlan0 scan                       # 扫描网络
-# station wlan0 get-networks               # 列出可用网络
-# station wlan0 connect &lt;SSID&gt;             # 连接 WiFi
-# quit                                     # 退出工具
-
-# 2. 检查网络连通性
-ping -c 4 google.com                       # 发送 4 个 ICMP 包测试网络
-
-# 3. 更新系统时间（防止证书校验失败）
-timedatectl set-ntp true                   # 开启网络时间同步
-
-2. 磁盘分区与格式化
-我们将采用主流的 UEFI &#43; GPT 结构。">
+<meta name="robots" content="noindex, nofollow">
+<title>Arch Linux 权威安装指南：从系统构建到图形环境 | RookieIO&#39;s Tech Lab</title>
+<meta name="keywords" content="Linux, Arch Linux, KDE, Installation">
+<meta name="description" content="保姆级 Arch Linux 安装教程，包含从联网、分区到 KDE 桌面环境配置的全过程。">
 <meta name="author" content="">
-<link rel="canonical" href="https://blog.luxrime.top/posts/archlinux_install/">
+<link rel="canonical" href="http://localhost:1313/posts/archlinux_install/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.00b861ce567f308b3d720986b5361bf4f3df0c2c45fa85c2c6c5e7d8cbeff271.css" integrity="sha256-ALhhzlZ/MIs9cgmGtTYb9PPfDCxF&#43;oXCxsXn2Mvv8nE=" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://blog.luxrime.top/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://blog.luxrime.top/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://blog.luxrime.top/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://blog.luxrime.top/apple-touch-icon.png">
-<link rel="mask-icon" href="https://blog.luxrime.top/safari-pinned-tab.svg">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="https://blog.luxrime.top/posts/archlinux_install/">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/archlinux_install/">
 <noscript>
     <style>
         #theme-toggle,
@@ -97,103 +70,13 @@ timedatectl set-ntp true                   # 开启网络时间同步
         document.querySelector("html").dataset.theme = 'light';
     }
 
-</script><meta property="og:url" content="https://blog.luxrime.top/posts/archlinux_install/">
-  <meta property="og:site_name" content="RookieIO&#39;s Tech Lab">
-  <meta property="og:title" content="RookieIO&#39;s Tech Lab">
-  <meta property="og:description" content=" title: “Arch Linux 安装指南：从系统构建到图形环境” date: 2026-01-15T15:30:00&#43;08:00 draft: false description: “Arch Linux 安装教程。” tags: [“Linux”, “Arch Linux”, “KDE”, “Installation”]
-🛠 Arch Linux 权威安装指南 (完整版) 欢迎来到 Arch Linux 的世界。本手册将带你完成从基础系统联网、分区到安装图形界面（GUI）及常用软件的全过程。
-1. 环境准备与联网 在启动后的 Live 环境中，首先需要确保网络通畅。
-# 1. 如果是无线网络，使用 iwd 联网 iwctl # 进入交互式联网工具 # 在 iwctl 界面中依次执行： # station wlan0 scan # 扫描网络 # station wlan0 get-networks # 列出可用网络 # station wlan0 connect &lt;SSID&gt; # 连接 WiFi # quit # 退出工具 # 2. 检查网络连通性 ping -c 4 google.com # 发送 4 个 ICMP 包测试网络 # 3. 更新系统时间（防止证书校验失败） timedatectl set-ntp true # 开启网络时间同步 2. 磁盘分区与格式化 我们将采用主流的 UEFI &#43; GPT 结构。">
-  <meta property="og:locale" content="zh-cn">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="posts">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="">
-<meta name="twitter:description" content="
-title: &ldquo;Arch Linux 安装指南：从系统构建到图形环境&rdquo;
-date: 2026-01-15T15:30:00&#43;08:00
-draft: false
-description: &ldquo;Arch Linux 安装教程。&rdquo;
-tags: [&ldquo;Linux&rdquo;, &ldquo;Arch Linux&rdquo;, &ldquo;KDE&rdquo;, &ldquo;Installation&rdquo;]
-
-🛠 Arch Linux 权威安装指南 (完整版)
-欢迎来到 Arch Linux 的世界。本手册将带你完成从基础系统联网、分区到安装图形界面（GUI）及常用软件的全过程。
-
-1. 环境准备与联网
-在启动后的 Live 环境中，首先需要确保网络通畅。
-# 1. 如果是无线网络，使用 iwd 联网
-iwctl                                      # 进入交互式联网工具
-# 在 iwctl 界面中依次执行：
-# station wlan0 scan                       # 扫描网络
-# station wlan0 get-networks               # 列出可用网络
-# station wlan0 connect &lt;SSID&gt;             # 连接 WiFi
-# quit                                     # 退出工具
-
-# 2. 检查网络连通性
-ping -c 4 google.com                       # 发送 4 个 ICMP 包测试网络
-
-# 3. 更新系统时间（防止证书校验失败）
-timedatectl set-ntp true                   # 开启网络时间同步
-
-2. 磁盘分区与格式化
-我们将采用主流的 UEFI &#43; GPT 结构。">
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "笔记",
-      "item": "https://blog.luxrime.top/posts/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "",
-      "item": "https://blog.luxrime.top/posts/archlinux_install/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "",
-  "name": "",
-  "description": " title: \u0026ldquo;Arch Linux 安装指南：从系统构建到图形环境\u0026rdquo; date: 2026-01-15T15:30:00+08:00 draft: false description: \u0026ldquo;Arch Linux 安装教程。\u0026rdquo; tags: [\u0026ldquo;Linux\u0026rdquo;, \u0026ldquo;Arch Linux\u0026rdquo;, \u0026ldquo;KDE\u0026rdquo;, \u0026ldquo;Installation\u0026rdquo;]\n🛠 Arch Linux 权威安装指南 (完整版) 欢迎来到 Arch Linux 的世界。本手册将带你完成从基础系统联网、分区到安装图形界面（GUI）及常用软件的全过程。\n1. 环境准备与联网 在启动后的 Live 环境中，首先需要确保网络通畅。\n# 1. 如果是无线网络，使用 iwd 联网 iwctl # 进入交互式联网工具 # 在 iwctl 界面中依次执行： # station wlan0 scan # 扫描网络 # station wlan0 get-networks # 列出可用网络 # station wlan0 connect \u0026lt;SSID\u0026gt; # 连接 WiFi # quit # 退出工具 # 2. 检查网络连通性 ping -c 4 google.com # 发送 4 个 ICMP 包测试网络 # 3. 更新系统时间（防止证书校验失败） timedatectl set-ntp true # 开启网络时间同步 2. 磁盘分区与格式化 我们将采用主流的 UEFI + GPT 结构。\n",
-  "keywords": [
-    
-  ],
-  "articleBody": " title: “Arch Linux 安装指南：从系统构建到图形环境” date: 2026-01-15T15:30:00+08:00 draft: false description: “Arch Linux 安装教程。” tags: [“Linux”, “Arch Linux”, “KDE”, “Installation”]\n🛠 Arch Linux 权威安装指南 (完整版) 欢迎来到 Arch Linux 的世界。本手册将带你完成从基础系统联网、分区到安装图形界面（GUI）及常用软件的全过程。\n1. 环境准备与联网 在启动后的 Live 环境中，首先需要确保网络通畅。\n# 1. 如果是无线网络，使用 iwd 联网 iwctl # 进入交互式联网工具 # 在 iwctl 界面中依次执行： # station wlan0 scan # 扫描网络 # station wlan0 get-networks # 列出可用网络 # station wlan0 connect # 连接 WiFi # quit # 退出工具 # 2. 检查网络连通性 ping -c 4 google.com # 发送 4 个 ICMP 包测试网络 # 3. 更新系统时间（防止证书校验失败） timedatectl set-ntp true # 开启网络时间同步 2. 磁盘分区与格式化 我们将采用主流的 UEFI + GPT 结构。\n2.1 分区规划 使用 cfdisk 工具进行可视化操作：\ncfdisk /dev/nvme0n1 # 打开磁盘分区工具 # 选择 Label 类型为: gpt # 分区 1: 512M -\u003e 类型选择 EFI System # 分区 2: 剩余空间 -\u003e 类型选择 Linux filesystem # 点击 Write 写入更改，然后 Quit 退出 2.2 格式化与挂载 # 格式化分区 mkfs.fat -F 32 /dev/nvme0n1p1 # EFI 分区 mkfs.ext4 /dev/nvme0n1p2 # 根分区 # 挂载分区 mount /dev/nvme0n1p2 /mnt # 先挂载根目录 mkdir -p /mnt/boot # 创建 EFI 挂载点 mount /dev/nvme0n1p1 /mnt/boot # 挂载 EFI 分区 3. 系统安装与基础配置 3.1 安装核心包 # 优化镜像源（中国区） reflector --country China --protocol https --sort rate --save /etc/pacman.d/mirrorlist # 安装基础系统 pacstrap /mnt base linux linux-firmware base-devel networkmanager vim 3.2 系统初始化 # 生成挂载表 genfstab -U /mnt \u003e\u003e /mnt/etc/fstab # 进入新系统 (Chroot) arch-chroot /mnt # 设置时区与本地化 ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime hwclock --systohc # 编辑 /etc/locale.gen 取消 en_US.UTF-8 注释，然后运行： locale-gen echo \"LANG=en_US.UTF-8\" \u003e /etc/locale.conf # 用户与权限 echo \"my-arch\" \u003e /etc/hostname # 设置主机名 passwd # 设置 root 密码 useradd -m -G wheel myuser # 创建普通用户 passwd myuser # 使用 visudo 取消 %wheel ALL=(ALL:ALL) ALL 的注释 3.3 引导程序 (GRUB) pacman -S grub efibootmgr grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=ARCH grub-mkconfig -o /boot/grub/grub.cfg 🖥 4. 图形桌面环境安装 (KDE Plasma) 完成基础系统后，我们需要安装显示驱动和桌面环境。\n# 1. 安装显卡驱动（根据你的显卡选择） # 英伟达: pacman -S nvidia nvidia-utils # 英特尔: pacman -S mesa lib32-mesa vulkan-intel # AMD: pacman -S mesa lib32-mesa xf86-video-amdgpu pacman -S mesa # 通用开源驱动 # 2. 安装 Xorg 和 字体 pacman -S xorg ttf-dejavu wqy-microhei # 包含中文字体防止乱码 # 3. 安装 KDE Plasma 核心组件 pacman -S plasma-desktop sddm konsole dolphin # 解释： # plasma-desktop: 桌面核心 # sddm: 登录管理器 (显示管理器) # konsole: 终端 # dolphin: 文件管理器 # 4. 启用登录管理器服务（开机进入图形界面） systemctl enable sddm systemctl enable NetworkManager 🚀 5. 推荐软件清单 系统装好后，建议通过 pacman 或 yay 安装以下生产力工具。\n5.1 基础必装 软件名 用途 安装命令 Google Chrome 网页浏览器 yay -S google-chrome VS Code 代码编辑器 sudo pacman -S code Git 版本控制 sudo pacman -S git Fastfetch 系统信息展示 sudo pacman -S fastfetch 5.2 系统维护 Yay: AUR 助手（必装，用于安装官方库没有的软件）。 Timeshift: 系统快照（防止滚挂后的救命稻草）。 Btop: 极高颜值的系统资源监视器。 5.3 生产力与多媒体 Typora: 极致的 Markdown 编辑体验。 VLC: 全能视频播放器。 Telegram Desktop: 通讯工具。 YesPlayMusic: 高颜值的第三方网易云客户端。 6. 完成安装 exit # 退出 chroot umount -R /mnt # 卸载分区 reboot # 重启进入新世界 ",
-  "wordCount" : "427",
-  "inLanguage": "en",
-  "datePublished": "0001-01-01T00:00:00Z",
-  "dateModified": "0001-01-01T00:00:00Z",
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://blog.luxrime.top/posts/archlinux_install/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "RookieIO's Tech Lab",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://blog.luxrime.top/favicon.ico"
-    }
-  }
-}
 </script>
 </head>
 <body id="top">
     <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="https://blog.luxrime.top/" accesskey="h" title="RookieIO&#39;s Tech Lab (Alt + H)">RookieIO&#39;s Tech Lab</a>
+            <a href="http://localhost:1313/" accesskey="h" title="RookieIO&#39;s Tech Lab (Alt + H)">RookieIO&#39;s Tech Lab</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -219,12 +102,12 @@ timedatectl set-ntp true                   # 开启网络时间同步
         </div>
         <ul id="menu">
             <li>
-                <a href="https://blog.luxrime.top/posts/" title="文章">
+                <a href="http://localhost:1313/posts/" title="文章">
                     <span>文章</span>
                 </a>
             </li>
             <li>
-                <a href="https://blog.luxrime.top/search/" title="搜索">
+                <a href="http://localhost:1313/search/" title="搜索">
                     <span>搜索</span>
                 </a>
             </li>
@@ -237,20 +120,16 @@ timedatectl set-ntp true                   # 开启网络时间同步
   <header class="post-header">
     
     <h1 class="post-title entry-hint-parent">
-      
+      Arch Linux 权威安装指南：从系统构建到图形环境
     </h1>
-    <div class="post-meta"><span>3 min</span>
+    <div class="post-description">
+      保姆级 Arch Linux 安装教程，包含从联网、分区到 KDE 桌面环境配置的全过程。
+    </div>
+    <div class="post-meta"><span title='2026-01-15 13:00:00 +0800 CST'>January 15, 2026</span>&nbsp;·&nbsp;<span>2 min</span>
 
 </div>
   </header> 
-  <div class="post-content"><hr>
-<p>title: &ldquo;Arch Linux 安装指南：从系统构建到图形环境&rdquo;
-date: 2026-01-15T15:30:00+08:00
-draft: false
-description: &ldquo;Arch Linux 安装教程。&rdquo;
-tags: [&ldquo;Linux&rdquo;, &ldquo;Arch Linux&rdquo;, &ldquo;KDE&rdquo;, &ldquo;Installation&rdquo;]</p>
-<hr>
-<h1 id="-arch-linux-权威安装指南-完整版">🛠 Arch Linux 权威安装指南 (完整版)<a hidden class="anchor" aria-hidden="true" href="#-arch-linux-权威安装指南-完整版">#</a></h1>
+  <div class="post-content"><h1 id="-arch-linux-安装指南">🛠 Arch Linux 安装指南<a hidden class="anchor" aria-hidden="true" href="#-arch-linux-安装指南">#</a></h1>
 <p>欢迎来到 Arch Linux 的世界。本手册将带你完成从基础系统联网、分区到安装图形界面（GUI）及常用软件的全过程。</p>
 <hr>
 <h2 id="1-环境准备与联网">1. 环境准备与联网<a hidden class="anchor" aria-hidden="true" href="#1-环境准备与联网">#</a></h2>
@@ -323,9 +202,9 @@ tags: [&ldquo;Linux&rdquo;, &ldquo;Arch Linux&rdquo;, &ldquo;KDE&rdquo;, &ldquo;
 <h2 id="-4-图形桌面环境安装-kde-plasma">🖥 4. 图形桌面环境安装 (KDE Plasma)<a hidden class="anchor" aria-hidden="true" href="#-4-图形桌面环境安装-kde-plasma">#</a></h2>
 <p>完成基础系统后，我们需要安装显示驱动和桌面环境。</p>
 <div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 1. 安装显卡驱动（根据你的显卡选择）</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># 英伟达: pacman -S nvidia nvidia-utils</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># 英特尔: pacman -S mesa lib32-mesa vulkan-intel</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># AMD: pacman -S mesa lib32-mesa xf86-video-amdgpu</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 英伟达: pacman -S nvidia nvidia-utils</span>
 </span></span><span class="line"><span class="cl">pacman -S mesa                             <span class="c1"># 通用开源驱动</span>
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl"><span class="c1"># 2. 安装 Xorg 和 字体</span>
@@ -339,12 +218,12 @@ tags: [&ldquo;Linux&rdquo;, &ldquo;Arch Linux&rdquo;, &ldquo;KDE&rdquo;, &ldquo;
 </span></span><span class="line"><span class="cl"><span class="c1"># konsole: 终端</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># dolphin: 文件管理器</span>
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># 4. 启用登录管理器服务（开机进入图形界面）</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 4. 启用服务（开机进入图形界面）</span>
 </span></span><span class="line"><span class="cl">systemctl <span class="nb">enable</span> sddm
 </span></span><span class="line"><span class="cl">systemctl <span class="nb">enable</span> NetworkManager
 </span></span></code></pre></div><hr>
 <h2 id="-5-推荐软件清单">🚀 5. 推荐软件清单<a hidden class="anchor" aria-hidden="true" href="#-5-推荐软件清单">#</a></h2>
-<p>系统装好后，建议通过 <code>pacman</code> 或 <code>yay</code> 安装以下生产力工具。</p>
+<p>系统装好后，建议安装以下生产力工具。</p>
 <h3 id="51-基础必装">5.1 基础必装<a hidden class="anchor" aria-hidden="true" href="#51-基础必装">#</a></h3>
 <table>
   <thead>
@@ -379,16 +258,16 @@ tags: [&ldquo;Linux&rdquo;, &ldquo;Arch Linux&rdquo;, &ldquo;KDE&rdquo;, &ldquo;
 </table>
 <h3 id="52-系统维护">5.2 系统维护<a hidden class="anchor" aria-hidden="true" href="#52-系统维护">#</a></h3>
 <ul>
-<li><strong>Yay</strong>: AUR 助手（必装，用于安装官方库没有的软件）。</li>
-<li><strong>Timeshift</strong>: 系统快照（防止滚挂后的救命稻草）。</li>
-<li><strong>Btop</strong>: 极高颜值的系统资源监视器。</li>
+<li><strong>Yay</strong>: AUR 助手（必装）。</li>
+<li><strong>Timeshift</strong>: 系统快照（防止滚挂）。</li>
+<li><strong>Btop</strong>: 实时资源监视器。</li>
 </ul>
 <h3 id="53-生产力与多媒体">5.3 生产力与多媒体<a hidden class="anchor" aria-hidden="true" href="#53-生产力与多媒体">#</a></h3>
 <ul>
-<li><strong>Typora</strong>: 极致的 Markdown 编辑体验。</li>
-<li><strong>VLC</strong>: 全能视频播放器。</li>
+<li><strong>Typora</strong>: Markdown 编辑器。</li>
+<li><strong>VLC</strong>: 全能播放器。</li>
 <li><strong>Telegram Desktop</strong>: 通讯工具。</li>
-<li><strong>YesPlayMusic</strong>: 高颜值的第三方网易云客户端。</li>
+<li><strong>YesPlayMusic</strong>: 高颜值网易云客户端。</li>
 </ul>
 <hr>
 <h2 id="6-完成安装">6. 完成安装<a hidden class="anchor" aria-hidden="true" href="#6-完成安装">#</a></h2>
@@ -401,12 +280,16 @@ tags: [&ldquo;Linux&rdquo;, &ldquo;Arch Linux&rdquo;, &ldquo;KDE&rdquo;, &ldquo;
 
   <footer class="post-footer">
     <ul class="post-tags">
+      <li><a href="http://localhost:1313/tags/linux/">Linux</a></li>
+      <li><a href="http://localhost:1313/tags/arch-linux/">Arch Linux</a></li>
+      <li><a href="http://localhost:1313/tags/kde/">KDE</a></li>
+      <li><a href="http://localhost:1313/tags/installation/">Installation</a></li>
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://blog.luxrime.top/posts/my-first-post/">
-    <span class="title">« Prev</span>
+  <a class="next" href="http://localhost:1313/posts/pacman_qperations/">
+    <span class="title">Next »</span>
     <br>
-    <span>Linux中文件系统各个目录的作用</span>
+    <span>Pacman包管理</span>
   </a>
 </nav>
 
@@ -415,7 +298,7 @@ tags: [&ldquo;Linux&rdquo;, &ldquo;Arch Linux&rdquo;, &ldquo;KDE&rdquo;, &ldquo;
     </main>
     
 <footer class="footer">
-        <span>&copy; 2026 <a href="https://blog.luxrime.top/">RookieIO&#39;s Tech Lab</a></span> · 
+        <span>&copy; 2026 <a href="http://localhost:1313/">RookieIO&#39;s Tech Lab</a></span> · 
 
     <span>
         Powered by

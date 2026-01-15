@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto" data-theme="auto">
 
-<head><meta charset="utf-8">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="noindex, nofollow">
 <title>Firewalld 配置指南 | RookieIO&#39;s Tech Lab</title>
 <meta name="keywords" content="">
 <meta name="description" content="🔥 Firewalld 权威参考手册 (Arch Linux 版)
@@ -128,16 +128,16 @@ sudo firewall-cmd --reload
 🔍 3. 信息查看与审计 (Information)
 在修改之前，先学会怎么“看”。">
 <meta name="author" content="">
-<link rel="canonical" href="https://blog.luxrime.top/posts/test-deploy/">
+<link rel="canonical" href="http://localhost:1313/posts/test-deploy/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.00b861ce567f308b3d720986b5361bf4f3df0c2c45fa85c2c6c5e7d8cbeff271.css" integrity="sha256-ALhhzlZ/MIs9cgmGtTYb9PPfDCxF&#43;oXCxsXn2Mvv8nE=" rel="preload stylesheet" as="style">
-<link rel="icon" href="https://blog.luxrime.top/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="https://blog.luxrime.top/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="https://blog.luxrime.top/favicon-32x32.png">
-<link rel="apple-touch-icon" href="https://blog.luxrime.top/apple-touch-icon.png">
-<link rel="mask-icon" href="https://blog.luxrime.top/safari-pinned-tab.svg">
+<link rel="icon" href="http://localhost:1313/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
+<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
+<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" hreflang="en" href="https://blog.luxrime.top/posts/test-deploy/">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/test-deploy/">
 <noscript>
     <style>
         #theme-toggle,
@@ -189,198 +189,13 @@ sudo firewall-cmd --reload
         document.querySelector("html").dataset.theme = 'light';
     }
 
-</script><meta property="og:url" content="https://blog.luxrime.top/posts/test-deploy/">
-  <meta property="og:site_name" content="RookieIO&#39;s Tech Lab">
-  <meta property="og:title" content="Firewalld 配置指南">
-  <meta property="og:description" content="🔥 Firewalld 权威参考手册 (Arch Linux 版) 属性 说明 适用系统 Arch Linux, CentOS, Fedora, RHEL, openSUSE 底层后端 nftables (新版) / iptables (旧版) 核心工具 firewall-cmd 配置文件路径 /etc/firewalld/ (用户配置), /usr/lib/firewalld/ (默认配置) 文档版本 v2.0 (终极详细版) 📖 1. 核心设计哲学 (必读) 在操作之前，必须理解 Firewalld 的两个核心概念，否则你的配置可能会重启失效，或者逻辑混乱。
-1.1 运行时 (Runtime) vs 永久 (Permanent) Firewalld 的配置分两层：
-Runtime (内存中): 修改立刻生效，但重启后丢失。用于测试规则。 Permanent (硬盘中): 修改写入配置文件，重载 (Reload) 后才生效。用于持久化。 💡 最佳实践: 永远使用 --permanent 参数，然后立即运行 --reload。除非你只是想临时测试一下怕把自己锁在外面。
-1.2 区域 (Zones) Firewalld 将网络划分为不同的“信任等级”。网卡 (Interface) 必须绑定在某个区域里。
-区域 (Zone) 信任度 默认行为 典型应用场景 drop 0% (黑洞) 丢弃所有入站包，不给任何回应。 遭受攻击时 / 极高安全环境。 block 10% (拒绝) 拒绝所有入站包，但会回复 icmp-prohibited (告诉对方被拒了)。 调试网络连通性时。 public 30% (默认) 仅允许显式放行的端口 (如 ssh, dhcpv6-client)。 公共 Wi-Fi / 默认对外网卡。 external 40% 类似 public，但默认开启 IP 伪装 (Masquerade)。 路由器 WAN 口 / 软路由出口。 home 70% 信任大多设备，开放 mdns, ssh, samba。 家庭局域网。 work 60% 类似 home，但限制更严。 公司内网。 trusted 100% 允许所有流量 (无防火墙限制)。 VPN 虚拟网卡 (tun0) / 容器内部通信。 🛠 2. 服务生命周期管理 # 启动防火墙 sudo systemctl start firewalld # 设置开机自启 sudo systemctl enable firewalld # 停止防火墙 (调试连通性第一步) sudo systemctl stop firewalld # 彻底禁用 (防止开机自启) sudo systemctl disable firewalld # 检查运行状态 (Running / Not running) sudo firewall-cmd --state # 重新加载配置 (修改 Permanent 后必须执行！) sudo firewall-cmd --reload 🔍 3. 信息查看与审计 (Information) 在修改之前，先学会怎么“看”。">
-  <meta property="og:locale" content="zh-cn">
-  <meta property="og:type" content="article">
-    <meta property="article:section" content="posts">
-    <meta property="article:published_time" content="2026-01-15T09:02:47+08:00">
-    <meta property="article:modified_time" content="2026-01-15T09:02:47+08:00">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Firewalld 配置指南">
-<meta name="twitter:description" content="🔥 Firewalld 权威参考手册 (Arch Linux 版)
-
-  
-      
-          属性
-          说明
-      
-  
-  
-      
-          适用系统
-          Arch Linux, CentOS, Fedora, RHEL, openSUSE
-      
-      
-          底层后端
-          nftables (新版) / iptables (旧版)
-      
-      
-          核心工具
-          firewall-cmd
-      
-      
-          配置文件路径
-          /etc/firewalld/ (用户配置), /usr/lib/firewalld/ (默认配置)
-      
-      
-          文档版本
-          v2.0 (终极详细版)
-      
-  
-
-
-📖 1. 核心设计哲学 (必读)
-在操作之前，必须理解 Firewalld 的两个核心概念，否则你的配置可能会重启失效，或者逻辑混乱。
-1.1 运行时 (Runtime) vs 永久 (Permanent)
-Firewalld 的配置分两层：
-
-Runtime (内存中): 修改立刻生效，但重启后丢失。用于测试规则。
-Permanent (硬盘中): 修改写入配置文件，重载 (Reload) 后才生效。用于持久化。
-
-
-💡 最佳实践: 永远使用 --permanent 参数，然后立即运行 --reload。除非你只是想临时测试一下怕把自己锁在外面。
-
-1.2 区域 (Zones)
-Firewalld 将网络划分为不同的“信任等级”。网卡 (Interface) 必须绑定在某个区域里。
-
-  
-      
-          区域 (Zone)
-          信任度
-          默认行为
-          典型应用场景
-      
-  
-  
-      
-          drop
-          0% (黑洞)
-          丢弃所有入站包，不给任何回应。
-          遭受攻击时 / 极高安全环境。
-      
-      
-          block
-          10% (拒绝)
-          拒绝所有入站包，但会回复 icmp-prohibited (告诉对方被拒了)。
-          调试网络连通性时。
-      
-      
-          public
-          30% (默认)
-          仅允许显式放行的端口 (如 ssh, dhcpv6-client)。
-          公共 Wi-Fi / 默认对外网卡。
-      
-      
-          external
-          40%
-          类似 public，但默认开启 IP 伪装 (Masquerade)。
-          路由器 WAN 口 / 软路由出口。
-      
-      
-          home
-          70%
-          信任大多设备，开放 mdns, ssh, samba。
-          家庭局域网。
-      
-      
-          work
-          60%
-          类似 home，但限制更严。
-          公司内网。
-      
-      
-          trusted
-          100%
-          允许所有流量 (无防火墙限制)。
-          VPN 虚拟网卡 (tun0) / 容器内部通信。
-      
-  
-
-
-🛠 2. 服务生命周期管理
-# 启动防火墙
-sudo systemctl start firewalld
-
-# 设置开机自启
-sudo systemctl enable firewalld
-
-# 停止防火墙 (调试连通性第一步)
-sudo systemctl stop firewalld
-
-# 彻底禁用 (防止开机自启)
-sudo systemctl disable firewalld
-
-# 检查运行状态 (Running / Not running)
-sudo firewall-cmd --state
-
-# 重新加载配置 (修改 Permanent 后必须执行！)
-sudo firewall-cmd --reload
-🔍 3. 信息查看与审计 (Information)
-在修改之前，先学会怎么“看”。">
-
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position":  1 ,
-      "name": "笔记",
-      "item": "https://blog.luxrime.top/posts/"
-    }, 
-    {
-      "@type": "ListItem",
-      "position":  2 ,
-      "name": "Firewalld 配置指南",
-      "item": "https://blog.luxrime.top/posts/test-deploy/"
-    }
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "Firewalld 配置指南",
-  "name": "Firewalld 配置指南",
-  "description": "🔥 Firewalld 权威参考手册 (Arch Linux 版) 属性 说明 适用系统 Arch Linux, CentOS, Fedora, RHEL, openSUSE 底层后端 nftables (新版) / iptables (旧版) 核心工具 firewall-cmd 配置文件路径 /etc/firewalld/ (用户配置), /usr/lib/firewalld/ (默认配置) 文档版本 v2.0 (终极详细版) 📖 1. 核心设计哲学 (必读) 在操作之前，必须理解 Firewalld 的两个核心概念，否则你的配置可能会重启失效，或者逻辑混乱。\n1.1 运行时 (Runtime) vs 永久 (Permanent) Firewalld 的配置分两层：\nRuntime (内存中): 修改立刻生效，但重启后丢失。用于测试规则。 Permanent (硬盘中): 修改写入配置文件，重载 (Reload) 后才生效。用于持久化。 💡 最佳实践: 永远使用 --permanent 参数，然后立即运行 --reload。除非你只是想临时测试一下怕把自己锁在外面。\n1.2 区域 (Zones) Firewalld 将网络划分为不同的“信任等级”。网卡 (Interface) 必须绑定在某个区域里。\n区域 (Zone) 信任度 默认行为 典型应用场景 drop 0% (黑洞) 丢弃所有入站包，不给任何回应。 遭受攻击时 / 极高安全环境。 block 10% (拒绝) 拒绝所有入站包，但会回复 icmp-prohibited (告诉对方被拒了)。 调试网络连通性时。 public 30% (默认) 仅允许显式放行的端口 (如 ssh, dhcpv6-client)。 公共 Wi-Fi / 默认对外网卡。 external 40% 类似 public，但默认开启 IP 伪装 (Masquerade)。 路由器 WAN 口 / 软路由出口。 home 70% 信任大多设备，开放 mdns, ssh, samba。 家庭局域网。 work 60% 类似 home，但限制更严。 公司内网。 trusted 100% 允许所有流量 (无防火墙限制)。 VPN 虚拟网卡 (tun0) / 容器内部通信。 🛠 2. 服务生命周期管理 # 启动防火墙 sudo systemctl start firewalld # 设置开机自启 sudo systemctl enable firewalld # 停止防火墙 (调试连通性第一步) sudo systemctl stop firewalld # 彻底禁用 (防止开机自启) sudo systemctl disable firewalld # 检查运行状态 (Running / Not running) sudo firewall-cmd --state # 重新加载配置 (修改 Permanent 后必须执行！) sudo firewall-cmd --reload 🔍 3. 信息查看与审计 (Information) 在修改之前，先学会怎么“看”。\n",
-  "keywords": [
-    
-  ],
-  "articleBody": "🔥 Firewalld 权威参考手册 (Arch Linux 版) 属性 说明 适用系统 Arch Linux, CentOS, Fedora, RHEL, openSUSE 底层后端 nftables (新版) / iptables (旧版) 核心工具 firewall-cmd 配置文件路径 /etc/firewalld/ (用户配置), /usr/lib/firewalld/ (默认配置) 文档版本 v2.0 (终极详细版) 📖 1. 核心设计哲学 (必读) 在操作之前，必须理解 Firewalld 的两个核心概念，否则你的配置可能会重启失效，或者逻辑混乱。\n1.1 运行时 (Runtime) vs 永久 (Permanent) Firewalld 的配置分两层：\nRuntime (内存中): 修改立刻生效，但重启后丢失。用于测试规则。 Permanent (硬盘中): 修改写入配置文件，重载 (Reload) 后才生效。用于持久化。 💡 最佳实践: 永远使用 --permanent 参数，然后立即运行 --reload。除非你只是想临时测试一下怕把自己锁在外面。\n1.2 区域 (Zones) Firewalld 将网络划分为不同的“信任等级”。网卡 (Interface) 必须绑定在某个区域里。\n区域 (Zone) 信任度 默认行为 典型应用场景 drop 0% (黑洞) 丢弃所有入站包，不给任何回应。 遭受攻击时 / 极高安全环境。 block 10% (拒绝) 拒绝所有入站包，但会回复 icmp-prohibited (告诉对方被拒了)。 调试网络连通性时。 public 30% (默认) 仅允许显式放行的端口 (如 ssh, dhcpv6-client)。 公共 Wi-Fi / 默认对外网卡。 external 40% 类似 public，但默认开启 IP 伪装 (Masquerade)。 路由器 WAN 口 / 软路由出口。 home 70% 信任大多设备，开放 mdns, ssh, samba。 家庭局域网。 work 60% 类似 home，但限制更严。 公司内网。 trusted 100% 允许所有流量 (无防火墙限制)。 VPN 虚拟网卡 (tun0) / 容器内部通信。 🛠 2. 服务生命周期管理 # 启动防火墙 sudo systemctl start firewalld # 设置开机自启 sudo systemctl enable firewalld # 停止防火墙 (调试连通性第一步) sudo systemctl stop firewalld # 彻底禁用 (防止开机自启) sudo systemctl disable firewalld # 检查运行状态 (Running / Not running) sudo firewall-cmd --state # 重新加载配置 (修改 Permanent 后必须执行！) sudo firewall-cmd --reload 🔍 3. 信息查看与审计 (Information) 在修改之前，先学会怎么“看”。\n# 1. 查看默认区域的所有规则 (最常用) sudo firewall-cmd --list-all # 2. 查看所有区域的详细规则 (信息量极大) sudo firewall-cmd --list-all-zones # 3. 查看当前活跃的区域 (查看网卡绑定在哪) sudo firewall-cmd --get-active-zones # 输出示例: # public # interfaces: wlan0 eth0 # trusted # interfaces: tun0 # 4. 查看系统预定义了哪些服务 (如 ssh, http, docker-registry 等) sudo firewall-cmd --get-services ⚙️ 4. 端口与服务管理 (常规操作) 场景: 开放 Web 服务、远程桌面、文件共享。 (注: 以下命令默认省略 sudo，实际使用请加上)\n4.1 基于服务的管理 (推荐) 不需要记端口号，直接用服务名。\n# 永久允许 HTTP (80) firewall-cmd --permanent --add-service=http # 永久允许 HTTPS (443) firewall-cmd --permanent --add-service=https # 永久允许 Samba 文件共享 firewall-cmd --permanent --add-service=samba # 永久允许 KDE Connect (手机传文件) firewall-cmd --permanent --add-service=kdeconnect # 移除服务 (关闭) firewall-cmd --permanent --remove-service=http 4.2 基于端口的管理 (更灵活) 当服务名不存在，或者使用了非标端口时使用。\n# 开放 TCP 8080 端口 firewall-cmd --permanent --add-port=8080/tcp # 开放 UDP 53 端口 (DNS) firewall-cmd --permanent --add-port=53/udp # 开放一段端口范围 (如 VNC Server) firewall-cmd --permanent --add-port=5900-5910/tcp # 移除端口 firewall-cmd --permanent --remove-port=8080/tcp 🛡 5. 富规则 (Rich Rules) —— 高级安全控制 这是 Firewalld 最强大的地方。可以实现：“只允许张三的 IP 访问我的 SSH，其他人滚蛋”。 语法格式: rule family=\"ipv4\" source address=\"源IP\" ... action\n场景 A: 限制 SSH 访问 (白名单) 只允许家里台式机 (192.168.1.50) 连接笔记本的 SSH。\n# 1. 添加富规则：允许 192.168.1.50 访问 SSH firewall-cmd --permanent --add-rich-rule='rule family=\"ipv4\" source address=\"192.168.1.50\" service name=\"ssh\" accept' # 2. 移除通用的 SSH 服务 (关键！否则上面那条没意义，因为通用规则允许了所有人) firewall-cmd --permanent --remove-service=ssh # 3. 重载 firewall-cmd --reload 场景 B: 封禁恶意 IP (黑名单) 发现 IP 123.45.67.89 一直在扫描你的端口。\nfirewall-cmd --permanent --add-rich-rule='rule family=\"ipv4\" source address=\"123.45.67.89\" drop' 场景 C: 记录日志 (审计) 记录所有来自 192.168.1.0/24 网段的 SSH 尝试，每分钟最多记录 3 次。\nfirewall-cmd --permanent --add-rich-rule='rule family=\"ipv4\" source address=\"192.168.1.0/24\" service name=\"ssh\" log prefix=\"SSH_ATTEMPT: \" level=\"info\" limit value=\"3/m\" accept' 🌐 6. 网卡与网络区域调整 场景: 你插了一个 USB 网卡，或者新建了 Sing-box 的虚拟网卡，需要调整它们所属的区域。\n6.1 将网卡移动到特定区域 比如把 Sing-box 的 tun0 设为信任。\n# 语法: --zone=目标区域 --change-interface=网卡名 firewall-cmd --permanent --zone=trusted --change-interface=tun0 6.2 修改默认区域 新插入的网卡默认会进入 public 区域。如果你希望默认更安全或更宽松：\n# 将默认区域设为 home firewall-cmd --set-default-zone=home 🔄 7. NAT 与 端口转发 (软路由/容器必备) 场景: Docker 容器上不了网，或者想把外网的 80 端口转发到内部虚拟机的 8080。\n7.1 开启 IP 伪装 (Masquerade) 这是 Docker/WSL/虚拟机 能够通过宿主机上网的前提。\n# 检查是否开启 firewall-cmd --zone=public --query-masquerade # 开启 (针对 public 区域) firewall-cmd --permanent --zone=public --add-masquerade 7.2 端口转发 (Port Forwarding) 将访问本机 80 端口的流量，转发到 8080 端口。\n# 语法: --add-forward-port=port=源端口:proto=协议:toport=目标端口 firewall-cmd --permanent --zone=public --add-forward-port=port=80:proto=tcp:toport=8080 🚨 8. 紧急救灾模式 (Panic Mode) 场景: 你发现服务器被黑客入侵了，正在疯狂传数据，你想立刻切断一切连接（物理拔网线的软件版）。\n# 开启恐慌模式 (切断所有网络连接，SSH 也会断！) sudo firewall-cmd --panic-on # 关闭恐慌模式 (恢复正常) sudo firewall-cmd --panic-off # 查询是否处于恐慌模式 sudo firewall-cmd --query-panic 💡 9. 调试技巧：为什么我的规则不生效？ 有没有 Reload？ 修改 --permanent 后必须 firewall-cmd --reload。 网卡在哪个区域？ 用 firewall-cmd --get-active-zones 确认你的流量是从哪个网卡进来的，以及那个网卡属于哪个 Zone。如果在 public 区加了规则，但网卡在 home 区，规则是不会生效的。 冲突检查 Rich Rules 的优先级很高。如果你同时设置了 drop 和 accept，需要仔细检查逻辑顺序。 Docker 的干扰 Docker 会直接操作 iptables，有时会绕过 Firewalld。如果发现 Docker 端口关不掉，这是 Docker 的特性（需修改 Docker 启动参数）。 📝 附录： Sing-box 专属配置集 当前的 Arch Linux + Sing-box (TUN) 环境，需要保持的配置：\n# 1. 允许 tun0 流量回流 (防止代理断网) firewall-cmd --permanent --zone=trusted --add-interface=tun0 # 2. 开启伪装 (支持虚拟化网络) firewall-cmd --permanent --zone=public --add-masquerade # 3. 开放 KDE Connect (方便手机传文件) firewall-cmd --permanent --zone=public --add-service=kdeconnect # 4. 生效 firewall-cmd --reload ",
-  "wordCount" : "603",
-  "inLanguage": "en",
-  "datePublished": "2026-01-15T09:02:47+08:00",
-  "dateModified": "2026-01-15T09:02:47+08:00",
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://blog.luxrime.top/posts/test-deploy/"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "RookieIO's Tech Lab",
-    "logo": {
-      "@type": "ImageObject",
-      "url": "https://blog.luxrime.top/favicon.ico"
-    }
-  }
-}
 </script>
 </head>
 <body id="top">
     <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="https://blog.luxrime.top/" accesskey="h" title="RookieIO&#39;s Tech Lab (Alt + H)">RookieIO&#39;s Tech Lab</a>
+            <a href="http://localhost:1313/" accesskey="h" title="RookieIO&#39;s Tech Lab (Alt + H)">RookieIO&#39;s Tech Lab</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -406,12 +221,12 @@ sudo firewall-cmd --reload
         </div>
         <ul id="menu">
             <li>
-                <a href="https://blog.luxrime.top/posts/" title="文章">
+                <a href="http://localhost:1313/posts/" title="文章">
                     <span>文章</span>
                 </a>
             </li>
             <li>
-                <a href="https://blog.luxrime.top/search/" title="搜索">
+                <a href="http://localhost:1313/search/" title="搜索">
                     <span>搜索</span>
                 </a>
             </li>
@@ -679,12 +494,12 @@ sudo firewall-cmd --reload
     <ul class="post-tags">
     </ul>
 <nav class="paginav">
-  <a class="prev" href="https://blog.luxrime.top/posts/pacman_qperations/">
+  <a class="prev" href="http://localhost:1313/posts/pacman_qperations/">
     <span class="title">« Prev</span>
     <br>
     <span>Pacman包管理</span>
   </a>
-  <a class="next" href="https://blog.luxrime.top/posts/github%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/">
+  <a class="next" href="http://localhost:1313/posts/github%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/">
     <span class="title">Next »</span>
     <br>
     <span>GitHub 使用方法</span>
@@ -696,7 +511,7 @@ sudo firewall-cmd --reload
     </main>
     
 <footer class="footer">
-        <span>&copy; 2026 <a href="https://blog.luxrime.top/">RookieIO&#39;s Tech Lab</a></span> · 
+        <span>&copy; 2026 <a href="http://localhost:1313/">RookieIO&#39;s Tech Lab</a></span> · 
 
     <span>
         Powered by

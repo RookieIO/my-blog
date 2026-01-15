@@ -1,12 +1,12 @@
 ---
-title: "Arch Linux 安装指南：从系统构建到图形环境"
-date: 2026-01-15T15:30:00+08:00
+title: "Arch Linux 权威安装指南：从系统构建到图形环境"
+date: 2026-01-15T13:00:00+08:00
 draft: false
-description: "Arch Linux 安装教程"
+description: "保姆级 Arch Linux 安装教程，包含从联网、分区到 KDE 桌面环境配置的全过程。"
 tags: ["Linux", "Arch Linux", "KDE", "Installation"]
 ---
 
-# 🛠 Arch Linux 权威安装指南 (完整版)
+# 🛠 Arch Linux 安装指南
 
 欢迎来到 Arch Linux 的世界。本手册将带你完成从基础系统联网、分区到安装图形界面（GUI）及常用软件的全过程。
 
@@ -99,6 +99,7 @@ passwd myuser
 ```
 
 ### 3.3 引导程序 (GRUB)
+
 ```bash
 pacman -S grub efibootmgr
 grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=ARCH
@@ -115,9 +116,9 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 ```bash
 # 1. 安装显卡驱动（根据你的显卡选择）
-# 英伟达: pacman -S nvidia nvidia-utils
 # 英特尔: pacman -S mesa lib32-mesa vulkan-intel
 # AMD: pacman -S mesa lib32-mesa xf86-video-amdgpu
+# 英伟达: pacman -S nvidia nvidia-utils
 pacman -S mesa                             # 通用开源驱动
 
 # 2. 安装 Xorg 和 字体
@@ -131,7 +132,7 @@ pacman -S plasma-desktop sddm konsole dolphin
 # konsole: 终端
 # dolphin: 文件管理器
 
-# 4. 启用登录管理器服务（开机进入图形界面）
+# 4. 启用服务（开机进入图形界面）
 systemctl enable sddm
 systemctl enable NetworkManager
 ```
@@ -140,7 +141,7 @@ systemctl enable NetworkManager
 
 ## 🚀 5. 推荐软件清单
 
-系统装好后，建议通过 `pacman` 或 `yay` 安装以下生产力工具。
+系统装好后，建议安装以下生产力工具。
 
 ### 5.1 基础必装
 | 软件名 | 用途 | 安装命令 |
@@ -151,15 +152,15 @@ systemctl enable NetworkManager
 | **Fastfetch** | 系统信息展示 | `sudo pacman -S fastfetch` |
 
 ### 5.2 系统维护
-* **Yay**: AUR 助手（必装，用于安装官方库没有的软件）。
-* **Timeshift**: 系统快照（防止滚挂后的救命稻草）。
-* **Btop**: 极高颜值的系统资源监视器。
+* **Yay**: AUR 助手（必装）。
+* **Timeshift**: 系统快照（防止滚挂）。
+* **Btop**: 实时资源监视器。
 
 ### 5.3 生产力与多媒体
-* **Typora**: 极致的 Markdown 编辑体验。
-* **VLC**: 全能视频播放器。
+* **Typora**: Markdown 编辑器。
+* **VLC**: 全能播放器。
 * **Telegram Desktop**: 通讯工具。
-* **YesPlayMusic**: 高颜值的第三方网易云客户端。
+* **YesPlayMusic**: 高颜值网易云客户端。
 
 ---
 
