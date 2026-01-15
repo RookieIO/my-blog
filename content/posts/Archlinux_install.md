@@ -1,8 +1,8 @@
 ---
-title: "Arch Linux 权威安装指南：从系统构建到图形环境"
+title: "Arch Linux 安装指南：从系统构建到图形环境"
 date: 2026-01-15T13:00:00+08:00
 draft: false
-description: "保姆级 Arch Linux 安装教程，包含从联网、分区到 KDE 桌面环境配置的全过程。"
+description: "Arch Linux 安装教程，包含从联网、分区到 KDE 桌面环境配置"
 tags: ["Linux", "Arch Linux", "KDE", "Installation"]
 ---
 
