@@ -2,17 +2,74 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
   <channel>
     <title>笔记 on RookieIO&#39;s Tech Lab</title>
-    <link>http://localhost:1313/posts/</link>
+    <link>https://blog.luxrime.top/posts/</link>
     <description>Recent content in 笔记 on RookieIO&#39;s Tech Lab</description>
     <generator>Hugo -- 0.154.5</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Thu, 15 Jan 2026 09:02:47 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 15 Jan 2026 11:57:29 +0800</lastBuildDate>
+    <atom:link href="https://blog.luxrime.top/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Pacman包管理</title>
+      <link>https://blog.luxrime.top/posts/pacman_qperations/</link>
+      <pubDate>Thu, 15 Jan 2026 11:57:29 +0800</pubDate>
+      <guid>https://blog.luxrime.top/posts/pacman_qperations/</guid>
+      <description>&lt;h1 id=&#34;-arch-linux-包管理器-pacman-权威运维手册&#34;&gt;📦 Arch Linux 包管理器 (Pacman) 权威运维手册&lt;/h1&gt;
+&lt;table&gt;
+  &lt;thead&gt;
+      &lt;tr&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;属性&lt;/th&gt;
+          &lt;th style=&#34;text-align: left&#34;&gt;详细说明&lt;/th&gt;
+      &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;核心程序&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;code&gt;pacman&lt;/code&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;配置文件&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;code&gt;/etc/pacman.conf&lt;/code&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;镜像列表&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;code&gt;/etc/pacman.d/mirrorlist&lt;/code&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;缓存路径&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;code&gt;/var/cache/pacman/pkg/&lt;/code&gt;&lt;/td&gt;
+      &lt;/tr&gt;
+      &lt;tr&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;&lt;strong&gt;文档版本&lt;/strong&gt;&lt;/td&gt;
+          &lt;td style=&#34;text-align: left&#34;&gt;v3.0 (进阶详细版)&lt;/td&gt;
+      &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;-1-安全红线-the-do-nots&#34;&gt;🛑 1. 安全红线 (The &amp;ldquo;Do Nots&amp;rdquo;)&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;在操作前，请刻在脑子里，否则极易导致系统崩溃（滚挂）。&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&#34;-禁忌一禁止部分更新-partial-upgrades&#34;&gt;❌ 禁忌一：禁止部分更新 (Partial Upgrades)&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;错误操作&lt;/strong&gt;: &lt;code&gt;pacman -Sy firefox&lt;/code&gt; (只同步数据库，然后只安装 Firefox)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;后果&lt;/strong&gt;: 你的数据库是最新的，但系统里的核心库（如 &lt;code&gt;glibc&lt;/code&gt;）是旧的。新 Firefox 调用新库时，因为找不到而崩溃。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;✅ 正确做法&lt;/strong&gt;: &lt;strong&gt;永远同步并更新整个系统。&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo pacman -Syu firefox
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;-禁忌二强制忽略依赖&#34;&gt;❌ 禁忌二：强制忽略依赖&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;错误操作&lt;/strong&gt;: &lt;code&gt;pacman -Rdd 软件名&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;后果&lt;/strong&gt;: 强行删除了被其他软件依赖的包，导致其他软件打不开。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;✅ 正确做法&lt;/strong&gt;: 除非你非常清楚你在修 bug，否则只用 &lt;code&gt;-Rs&lt;/code&gt; 或 &lt;code&gt;-Rns&lt;/code&gt;。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;-2-安装与系统更新-install--update&#34;&gt;⬇️ 2. 安装与系统更新 (Install &amp;amp; Update)&lt;/h2&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;主参数&lt;/strong&gt;: &lt;code&gt;-S&lt;/code&gt; (Sync)&lt;/p&gt;</description>
+    </item>
     <item>
       <title>Firewalld 配置指南</title>
-      <link>http://localhost:1313/posts/test-deploy/</link>
+      <link>https://blog.luxrime.top/posts/test-deploy/</link>
       <pubDate>Thu, 15 Jan 2026 09:02:47 +0800</pubDate>
-      <guid>http://localhost:1313/posts/test-deploy/</guid>
+      <guid>https://blog.luxrime.top/posts/test-deploy/</guid>
       <description>&lt;h1 id=&#34;-firewalld-权威参考手册-arch-linux-版&#34;&gt;🔥 Firewalld 权威参考手册 (Arch Linux 版)&lt;/h1&gt;
 &lt;table&gt;
   &lt;thead&gt;
@@ -136,17 +193,51 @@
     </item>
     <item>
       <title>GitHub 使用方法</title>
-      <link>http://localhost:1313/posts/github%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</link>
+      <link>https://blog.luxrime.top/posts/github%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</link>
       <pubDate>Tue, 18 Nov 2025 13:36:41 +0800</pubDate>
-      <guid>http://localhost:1313/posts/github%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</guid>
+      <guid>https://blog.luxrime.top/posts/github%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</guid>
       <description>GitHub 搜索语法完全指南（含实用示例）</description>
     </item>
     <item>
       <title>Linux中文件系统各个目录的作用</title>
-      <link>http://localhost:1313/posts/my-first-post/</link>
+      <link>https://blog.luxrime.top/posts/my-first-post/</link>
       <pubDate>Wed, 12 Nov 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/my-first-post/</guid>
+      <guid>https://blog.luxrime.top/posts/my-first-post/</guid>
       <description>详细解释 Linux 文件系统中 /boot, /etc, /bin, /usr, /var 等核心目录的用途和区别。</description>
+    </item>
+    <item>
+      <title></title>
+      <link>https://blog.luxrime.top/posts/archlinux_install/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>https://blog.luxrime.top/posts/archlinux_install/</guid>
+      <description>&lt;hr&gt;
+&lt;p&gt;title: &amp;ldquo;Arch Linux 安装指南：从系统构建到图形环境&amp;rdquo;
+date: 2026-01-15T15:30:00+08:00
+draft: false
+description: &amp;ldquo;Arch Linux 安装教程。&amp;rdquo;
+tags: [&amp;ldquo;Linux&amp;rdquo;, &amp;ldquo;Arch Linux&amp;rdquo;, &amp;ldquo;KDE&amp;rdquo;, &amp;ldquo;Installation&amp;rdquo;]&lt;/p&gt;
+&lt;hr&gt;
+&lt;h1 id=&#34;-arch-linux-权威安装指南-完整版&#34;&gt;🛠 Arch Linux 权威安装指南 (完整版)&lt;/h1&gt;
+&lt;p&gt;欢迎来到 Arch Linux 的世界。本手册将带你完成从基础系统联网、分区到安装图形界面（GUI）及常用软件的全过程。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;1-环境准备与联网&#34;&gt;1. 环境准备与联网&lt;/h2&gt;
+&lt;p&gt;在启动后的 Live 环境中，首先需要确保网络通畅。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-bash&#34; data-lang=&#34;bash&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 1. 如果是无线网络，使用 iwd 联网&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;iwctl                                      &lt;span class=&#34;c1&#34;&gt;# 进入交互式联网工具&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 在 iwctl 界面中依次执行：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# station wlan0 scan                       # 扫描网络&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# station wlan0 get-networks               # 列出可用网络&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# station wlan0 connect &amp;lt;SSID&amp;gt;             # 连接 WiFi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# quit                                     # 退出工具&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 2. 检查网络连通性&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;ping -c &lt;span class=&#34;m&#34;&gt;4&lt;/span&gt; google.com                       &lt;span class=&#34;c1&#34;&gt;# 发送 4 个 ICMP 包测试网络&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;# 3. 更新系统时间（防止证书校验失败）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;timedatectl set-ntp &lt;span class=&#34;nb&#34;&gt;true&lt;/span&gt;                   &lt;span class=&#34;c1&#34;&gt;# 开启网络时间同步&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id=&#34;2-磁盘分区与格式化&#34;&gt;2. 磁盘分区与格式化&lt;/h2&gt;
+&lt;p&gt;我们将采用主流的 &lt;strong&gt;UEFI + GPT&lt;/strong&gt; 结构。&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>

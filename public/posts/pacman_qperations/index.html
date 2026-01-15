@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en" dir="auto" data-theme="auto">
+
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="robots" content="index, follow">
+<title>Pacman包管理 | RookieIO&#39;s Tech Lab</title>
+<meta name="keywords" content="">
+<meta name="description" content="📦 Arch Linux 包管理器 (Pacman) 权威运维手册
+
+  
+      
+          属性
+          详细说明
+      
+  
+  
+      
+          核心程序
+          pacman
+      
+      
+          配置文件
+          /etc/pacman.conf
+      
+      
+          镜像列表
+          /etc/pacman.d/mirrorlist
+      
+      
+          缓存路径
+          /var/cache/pacman/pkg/
+      
+      
+          文档版本
+          v3.0 (进阶详细版)
+      
+  
+
+
+🛑 1. 安全红线 (The &ldquo;Do Nots&rdquo;)
+在操作前，请刻在脑子里，否则极易导致系统崩溃（滚挂）。
+❌ 禁忌一：禁止部分更新 (Partial Upgrades)
+
+错误操作: pacman -Sy firefox (只同步数据库，然后只安装 Firefox)
+后果: 你的数据库是最新的，但系统里的核心库（如 glibc）是旧的。新 Firefox 调用新库时，因为找不到而崩溃。
+✅ 正确做法: 永远同步并更新整个系统。
+
+sudo pacman -Syu firefox
+❌ 禁忌二：强制忽略依赖
+
+错误操作: pacman -Rdd 软件名
+后果: 强行删除了被其他软件依赖的包，导致其他软件打不开。
+✅ 正确做法: 除非你非常清楚你在修 bug，否则只用 -Rs 或 -Rns。
+
+
+⬇️ 2. 安装与系统更新 (Install &amp; Update)
+
+主参数: -S (Sync)">
+<meta name="author" content="">
+<link rel="canonical" href="https://blog.luxrime.top/posts/pacman_qperations/">
+<link crossorigin="anonymous" href="/assets/css/stylesheet.00b861ce567f308b3d720986b5361bf4f3df0c2c45fa85c2c6c5e7d8cbeff271.css" integrity="sha256-ALhhzlZ/MIs9cgmGtTYb9PPfDCxF&#43;oXCxsXn2Mvv8nE=" rel="preload stylesheet" as="style">
+<link rel="icon" href="https://blog.luxrime.top/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.luxrime.top/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.luxrime.top/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.luxrime.top/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.luxrime.top/safari-pinned-tab.svg">
+<meta name="theme-color" content="#2e2e33">
+<meta name="msapplication-TileColor" content="#2e2e33">
+<link rel="alternate" hreflang="en" href="https://blog.luxrime.top/posts/pacman_qperations/">
+<noscript>
+    <style>
+        #theme-toggle,
+        .top-link {
+            display: none;
+        }
+
+    </style>
+    <style>
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --theme: rgb(29, 30, 32);
+                --entry: rgb(46, 46, 51);
+                --primary: rgb(218, 218, 219);
+                --secondary: rgb(155, 156, 157);
+                --tertiary: rgb(65, 66, 68);
+                --content: rgb(196, 196, 197);
+                --code-block-bg: rgb(46, 46, 51);
+                --code-bg: rgb(55, 56, 62);
+                --border: rgb(51, 51, 51);
+                color-scheme: dark;
+            }
+
+            .list {
+                background: var(--theme);
+            }
+
+            .toc {
+                background: var(--entry);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            .list::-webkit-scrollbar-thumb {
+                border-color: var(--code-bg);
+            }
+        }
+
+    </style>
+</noscript>
+<script>
+    if (localStorage.getItem("pref-theme") === "dark") {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else if (localStorage.getItem("pref-theme") === "light") {
+       document.querySelector("html").dataset.theme = 'light';
+    } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.querySelector("html").dataset.theme = 'dark';
+    } else {
+        document.querySelector("html").dataset.theme = 'light';
+    }
+
+</script><meta property="og:url" content="https://blog.luxrime.top/posts/pacman_qperations/">
+  <meta property="og:site_name" content="RookieIO&#39;s Tech Lab">
+  <meta property="og:title" content="Pacman包管理">
+  <meta property="og:description" content="📦 Arch Linux 包管理器 (Pacman) 权威运维手册 属性 详细说明 核心程序 pacman 配置文件 /etc/pacman.conf 镜像列表 /etc/pacman.d/mirrorlist 缓存路径 /var/cache/pacman/pkg/ 文档版本 v3.0 (进阶详细版) 🛑 1. 安全红线 (The “Do Nots”) 在操作前，请刻在脑子里，否则极易导致系统崩溃（滚挂）。
+❌ 禁忌一：禁止部分更新 (Partial Upgrades) 错误操作: pacman -Sy firefox (只同步数据库，然后只安装 Firefox) 后果: 你的数据库是最新的，但系统里的核心库（如 glibc）是旧的。新 Firefox 调用新库时，因为找不到而崩溃。 ✅ 正确做法: 永远同步并更新整个系统。 sudo pacman -Syu firefox ❌ 禁忌二：强制忽略依赖 错误操作: pacman -Rdd 软件名 后果: 强行删除了被其他软件依赖的包，导致其他软件打不开。 ✅ 正确做法: 除非你非常清楚你在修 bug，否则只用 -Rs 或 -Rns。 ⬇️ 2. 安装与系统更新 (Install &amp; Update) 主参数: -S (Sync)">
+  <meta property="og:locale" content="zh-cn">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-01-15T11:57:29+08:00">
+    <meta property="article:modified_time" content="2026-01-15T11:57:29+08:00">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Pacman包管理">
+<meta name="twitter:description" content="📦 Arch Linux 包管理器 (Pacman) 权威运维手册
+
+  
+      
+          属性
+          详细说明
+      
+  
+  
+      
+          核心程序
+          pacman
+      
+      
+          配置文件
+          /etc/pacman.conf
+      
+      
+          镜像列表
+          /etc/pacman.d/mirrorlist
+      
+      
+          缓存路径
+          /var/cache/pacman/pkg/
+      
+      
+          文档版本
+          v3.0 (进阶详细版)
+      
+  
+
+
+🛑 1. 安全红线 (The &ldquo;Do Nots&rdquo;)
+在操作前，请刻在脑子里，否则极易导致系统崩溃（滚挂）。
+❌ 禁忌一：禁止部分更新 (Partial Upgrades)
+
+错误操作: pacman -Sy firefox (只同步数据库，然后只安装 Firefox)
+后果: 你的数据库是最新的，但系统里的核心库（如 glibc）是旧的。新 Firefox 调用新库时，因为找不到而崩溃。
+✅ 正确做法: 永远同步并更新整个系统。
+
+sudo pacman -Syu firefox
+❌ 禁忌二：强制忽略依赖
+
+错误操作: pacman -Rdd 软件名
+后果: 强行删除了被其他软件依赖的包，导致其他软件打不开。
+✅ 正确做法: 除非你非常清楚你在修 bug，否则只用 -Rs 或 -Rns。
+
+
+⬇️ 2. 安装与系统更新 (Install &amp; Update)
+
+主参数: -S (Sync)">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "笔记",
+      "item": "https://blog.luxrime.top/posts/"
+    }, 
+    {
+      "@type": "ListItem",
+      "position":  2 ,
+      "name": "Pacman包管理",
+      "item": "https://blog.luxrime.top/posts/pacman_qperations/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Pacman包管理",
+  "name": "Pacman包管理",
+  "description": "📦 Arch Linux 包管理器 (Pacman) 权威运维手册 属性 详细说明 核心程序 pacman 配置文件 /etc/pacman.conf 镜像列表 /etc/pacman.d/mirrorlist 缓存路径 /var/cache/pacman/pkg/ 文档版本 v3.0 (进阶详细版) 🛑 1. 安全红线 (The \u0026ldquo;Do Nots\u0026rdquo;) 在操作前，请刻在脑子里，否则极易导致系统崩溃（滚挂）。\n❌ 禁忌一：禁止部分更新 (Partial Upgrades) 错误操作: pacman -Sy firefox (只同步数据库，然后只安装 Firefox) 后果: 你的数据库是最新的，但系统里的核心库（如 glibc）是旧的。新 Firefox 调用新库时，因为找不到而崩溃。 ✅ 正确做法: 永远同步并更新整个系统。 sudo pacman -Syu firefox ❌ 禁忌二：强制忽略依赖 错误操作: pacman -Rdd 软件名 后果: 强行删除了被其他软件依赖的包，导致其他软件打不开。 ✅ 正确做法: 除非你非常清楚你在修 bug，否则只用 -Rs 或 -Rns。 ⬇️ 2. 安装与系统更新 (Install \u0026amp; Update) 主参数: -S (Sync)\n",
+  "keywords": [
+    
+  ],
+  "articleBody": "📦 Arch Linux 包管理器 (Pacman) 权威运维手册 属性 详细说明 核心程序 pacman 配置文件 /etc/pacman.conf 镜像列表 /etc/pacman.d/mirrorlist 缓存路径 /var/cache/pacman/pkg/ 文档版本 v3.0 (进阶详细版) 🛑 1. 安全红线 (The “Do Nots”) 在操作前，请刻在脑子里，否则极易导致系统崩溃（滚挂）。\n❌ 禁忌一：禁止部分更新 (Partial Upgrades) 错误操作: pacman -Sy firefox (只同步数据库，然后只安装 Firefox) 后果: 你的数据库是最新的，但系统里的核心库（如 glibc）是旧的。新 Firefox 调用新库时，因为找不到而崩溃。 ✅ 正确做法: 永远同步并更新整个系统。 sudo pacman -Syu firefox ❌ 禁忌二：强制忽略依赖 错误操作: pacman -Rdd 软件名 后果: 强行删除了被其他软件依赖的包，导致其他软件打不开。 ✅ 正确做法: 除非你非常清楚你在修 bug，否则只用 -Rs 或 -Rns。 ⬇️ 2. 安装与系统更新 (Install \u0026 Update) 主参数: -S (Sync)\n2.1 核心更新流程 (每日必做) # 1. 标准全量更新 (同步数据库 + 更新软件) [推荐] sudo pacman -Syu # 2. 强制刷新数据库 (仅在切换镜像源后使用，平时别用，伤服务器) sudo pacman -Syyu 2.2 软件安装技巧 # 1. 安装单个或多个软件 sudo pacman -S vim git htop # 2. 安装包组 (Package Group) # 例如安装 KDE 全家桶，它会问你具体要选哪些，回车默认全选 sudo pacman -S plasma # 3. 智能安装 (脚本常用) # 作用：如果软件已经是最新版，跳过；如果没装或有更新，才执行。 sudo pacman -S --needed base-devel git 2.3 降级安装 (救命用) 当新版本有 Bug，你想回退到旧版本时。\n# 方法 A: 安装本地缓存中的旧包 (路径通常在 /var/cache/pacman/pkg/) sudo pacman -U /var/cache/pacman/pkg/package-old-version.pkg.tar.zst # 方法 B: 安装网上下载的包 (Arch Linux Archive) sudo pacman -U [https://archive.archlinux.org/packages/p/package/package.pkg.tar.zst](https://archive.archlinux.org/packages/p/package/package.pkg.tar.zst) 🗑️ 3. 卸载与清理 (Remove) 主参数: -R (Remove)\n3.1 标准卸载流程 请养成使用 -Rns 的习惯，保持系统洁癖。\n# 🟢 [推荐] 删除软件 + 没用的依赖 + 全局配置文件 sudo pacman -Rns gimp # 🟡 [普通] 删除软件 + 没用的依赖 (保留配置文件) sudo pacman -Rs gimp # 🔴 [不推荐] 仅删除软件本身 (依赖和配置全留着，制造垃圾) sudo pacman -R gimp 3.2 彻底清理 (Spring Cleaning) Arch 不会自动删除旧包，缓存会无限膨胀。\n# 1. 清理“孤儿包” (曾经作为依赖被安装，现在没人要了) # 解释：pacman -Qtdq 列出孤儿名，pacman -Rns 删除它们 sudo pacman -Rns $(pacman -Qtdq) # 2. 清理缓存 (释放硬盘空间) # 删除所有旧版本的包，只保留当前安装的那个版本 sudo pacman -Sc # 3. 清空缓存 (极端情况) # 删除缓存文件夹里的所有东西 (警告：删了就没法降级了) sudo pacman -Scc 🔍 4. 查询与搜索 (Query) Pacman 的数据库分两部分：本地 (Local) 和 远程 (Sync)。\n4.1 查远程 (搜软件) # 搜索软件 (支持模糊搜索) pacman -Ss 关键词 # 例: pacman -Ss browser # 查看远程软件的详细信息 (依赖、大小、构建日期) pacman -Si 软件名 4.2 查本地 (已安装) # 搜索已安装的软件 pacman -Qs 关键词 # 查看已安装软件的详细信息 pacman -Qi 软件名 # 列出软件的所有文件路径 (它到底装哪去了？) pacman -Ql 软件名 # 🔥 法医鉴定 (Who owns this file?) # 查某个文件属于哪个软件包 (排错神器) pacman -Qo /usr/bin/vim # 输出: /usr/bin/vim is owned by vim 9.0.xxxx 4.3 依赖树分析 # 查看它依赖谁 pactree 软件名 # 查看谁依赖它 (反向查询，卸载前看看有没有风险) pactree -r 软件名 🛠️ 5. 故障排除 (Troubleshooting) 5.1 数据库锁定 (Failed to init transaction) 场景: 更新中途断电或强制关闭终端，再次运行提示 db.lck exists。 解决: sudo rm /var/lib/pacman/db.lck 5.2 签名信任错误 (PGP Signature unknown trust) 场景: 很久没更新，提示签名无效或损坏。 原因: Arch 的密钥环 (Keyring) 更新非常频繁，你的本地密钥过期了。 解决: # 1. 先单独更新密钥环 sudo pacman -S archlinux-keyring # 2. 再更新系统 sudo pacman -Syu 5.3 文件冲突 (Exists in filesystem) 场景: 提示 /usr/bin/test exists in filesystem。 原因: 这个文件是你手动复制进去的，不属于 pacman 数据库，pacman 不敢覆盖。 解决: # 强制覆盖该文件 sudo pacman -Syu --overwrite /usr/bin/test # 或者强制覆盖所有冲突 (慎用) sudo pacman -Syu --overwrite \"*\" ⚙️ 6. 性能优化 (pacman.conf) 建议编辑 /etc/pacman.conf 开启以下现代功能。\n# sudo vim /etc/pacman.conf [options] # 🌈 开启彩色输出 Color # 🍬 开启吃豆人进度条彩蛋 ILoveCandy # 🚀 开启并行下载 (核心优化！) # 默认是单线程，改成 5 后下载速度快 5 倍 ParallelDownloads = 5 # 🚫 忽略升级 (锁版本) # 如果你不想更新内核或显卡驱动，填在这里 IgnorePkg = linux linux-headers 🆚 附录：Pacman vs Yay (AUR助手) 动作 官方命令 (Pacman) AUR 助手 (Yay) 区别 系统更新 sudo pacman -Syu yay Yay 会同时检查 AUR 更新 安装软件 sudo pacman -S name yay -S name Yay 能装 AUR 里的软件 搜索 pacman -Ss name yay -Ss name Yay 同时搜官方库+AUR 清理孤儿 sudo pacman -Rns $(...) yay -Yc Yay 命令更短 打印统计 无 yay -Ps 查看安装数量和占用空间 📝 极简速查表 (Cheat Sheet) 更新系统: yay 装软件: sudo pacman -S xxx 删软件: sudo pacman -Rns xxx 清理垃圾: sudo pacman -Sc 这文件是谁的?: pacman -Qo 文件路径 ",
+  "wordCount" : "520",
+  "inLanguage": "en",
+  "datePublished": "2026-01-15T11:57:29+08:00",
+  "dateModified": "2026-01-15T11:57:29+08:00",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://blog.luxrime.top/posts/pacman_qperations/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "RookieIO's Tech Lab",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://blog.luxrime.top/favicon.ico"
+    }
+  }
+}
+</script>
+</head>
+<body id="top">
+    <header class="header">
+    <nav class="nav">
+        <div class="logo">
+            <a href="https://blog.luxrime.top/" accesskey="h" title="RookieIO&#39;s Tech Lab (Alt + H)">RookieIO&#39;s Tech Lab</a>
+            <div class="logo-switches">
+                <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
+                    <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg id="sun" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <ul id="menu">
+            <li>
+                <a href="https://blog.luxrime.top/posts/" title="文章">
+                    <span>文章</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://blog.luxrime.top/search/" title="搜索">
+                    <span>搜索</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</header>
+<main class="main">
+
+<article class="post-single">
+  <header class="post-header">
+    
+    <h1 class="post-title entry-hint-parent">
+      Pacman包管理
+    </h1>
+    <div class="post-meta"><span title='2026-01-15 11:57:29 +0800 CST'>January 15, 2026</span>&nbsp;·&nbsp;<span>3 min</span>
+
+</div>
+  </header> 
+  <div class="post-content"><h1 id="-arch-linux-包管理器-pacman-权威运维手册">📦 Arch Linux 包管理器 (Pacman) 权威运维手册<a hidden class="anchor" aria-hidden="true" href="#-arch-linux-包管理器-pacman-权威运维手册">#</a></h1>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">属性</th>
+          <th style="text-align: left">详细说明</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>核心程序</strong></td>
+          <td style="text-align: left"><code>pacman</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>配置文件</strong></td>
+          <td style="text-align: left"><code>/etc/pacman.conf</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>镜像列表</strong></td>
+          <td style="text-align: left"><code>/etc/pacman.d/mirrorlist</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>缓存路径</strong></td>
+          <td style="text-align: left"><code>/var/cache/pacman/pkg/</code></td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>文档版本</strong></td>
+          <td style="text-align: left">v3.0 (进阶详细版)</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="-1-安全红线-the-do-nots">🛑 1. 安全红线 (The &ldquo;Do Nots&rdquo;)<a hidden class="anchor" aria-hidden="true" href="#-1-安全红线-the-do-nots">#</a></h2>
+<p><strong>在操作前，请刻在脑子里，否则极易导致系统崩溃（滚挂）。</strong></p>
+<h3 id="-禁忌一禁止部分更新-partial-upgrades">❌ 禁忌一：禁止部分更新 (Partial Upgrades)<a hidden class="anchor" aria-hidden="true" href="#-禁忌一禁止部分更新-partial-upgrades">#</a></h3>
+<ul>
+<li><strong>错误操作</strong>: <code>pacman -Sy firefox</code> (只同步数据库，然后只安装 Firefox)</li>
+<li><strong>后果</strong>: 你的数据库是最新的，但系统里的核心库（如 <code>glibc</code>）是旧的。新 Firefox 调用新库时，因为找不到而崩溃。</li>
+<li><strong>✅ 正确做法</strong>: <strong>永远同步并更新整个系统。</strong></li>
+</ul>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo pacman -Syu firefox
+</span></span></code></pre></div><h3 id="-禁忌二强制忽略依赖">❌ 禁忌二：强制忽略依赖<a hidden class="anchor" aria-hidden="true" href="#-禁忌二强制忽略依赖">#</a></h3>
+<ul>
+<li><strong>错误操作</strong>: <code>pacman -Rdd 软件名</code></li>
+<li><strong>后果</strong>: 强行删除了被其他软件依赖的包，导致其他软件打不开。</li>
+<li><strong>✅ 正确做法</strong>: 除非你非常清楚你在修 bug，否则只用 <code>-Rs</code> 或 <code>-Rns</code>。</li>
+</ul>
+<hr>
+<h2 id="-2-安装与系统更新-install--update">⬇️ 2. 安装与系统更新 (Install &amp; Update)<a hidden class="anchor" aria-hidden="true" href="#-2-安装与系统更新-install--update">#</a></h2>
+<blockquote>
+<p><strong>主参数</strong>: <code>-S</code> (Sync)</p>
+</blockquote>
+<h3 id="21-核心更新流程-每日必做">2.1 核心更新流程 (每日必做)<a hidden class="anchor" aria-hidden="true" href="#21-核心更新流程-每日必做">#</a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 1. 标准全量更新 (同步数据库 + 更新软件) [推荐]</span>
+</span></span><span class="line"><span class="cl">sudo pacman -Syu
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 2. 强制刷新数据库 (仅在切换镜像源后使用，平时别用，伤服务器)</span>
+</span></span><span class="line"><span class="cl">sudo pacman -Syyu
+</span></span></code></pre></div><h3 id="22-软件安装技巧">2.2 软件安装技巧<a hidden class="anchor" aria-hidden="true" href="#22-软件安装技巧">#</a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 1. 安装单个或多个软件</span>
+</span></span><span class="line"><span class="cl">sudo pacman -S vim git htop
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 2. 安装包组 (Package Group)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 例如安装 KDE 全家桶，它会问你具体要选哪些，回车默认全选</span>
+</span></span><span class="line"><span class="cl">sudo pacman -S plasma
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 3. 智能安装 (脚本常用)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 作用：如果软件已经是最新版，跳过；如果没装或有更新，才执行。</span>
+</span></span><span class="line"><span class="cl">sudo pacman -S --needed base-devel git
+</span></span></code></pre></div><h3 id="23-降级安装-救命用">2.3 降级安装 (救命用)<a hidden class="anchor" aria-hidden="true" href="#23-降级安装-救命用">#</a></h3>
+<p>当新版本有 Bug，你想回退到旧版本时。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 方法 A: 安装本地缓存中的旧包 (路径通常在 /var/cache/pacman/pkg/)</span>
+</span></span><span class="line"><span class="cl">sudo pacman -U /var/cache/pacman/pkg/package-old-version.pkg.tar.zst
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 方法 B: 安装网上下载的包 (Arch Linux Archive)</span>
+</span></span><span class="line"><span class="cl">sudo pacman -U <span class="o">[</span>https://archive.archlinux.org/packages/p/package/package.pkg.tar.zst<span class="o">](</span>https://archive.archlinux.org/packages/p/package/package.pkg.tar.zst<span class="o">)</span>
+</span></span></code></pre></div><hr>
+<h2 id="-3-卸载与清理-remove">🗑️ 3. 卸载与清理 (Remove)<a hidden class="anchor" aria-hidden="true" href="#-3-卸载与清理-remove">#</a></h2>
+<blockquote>
+<p><strong>主参数</strong>: <code>-R</code> (Remove)</p>
+</blockquote>
+<h3 id="31-标准卸载流程">3.1 标准卸载流程<a hidden class="anchor" aria-hidden="true" href="#31-标准卸载流程">#</a></h3>
+<p><strong>请养成使用 <code>-Rns</code> 的习惯，保持系统洁癖。</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 🟢 [推荐] 删除软件 + 没用的依赖 + 全局配置文件</span>
+</span></span><span class="line"><span class="cl">sudo pacman -Rns gimp
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 🟡 [普通] 删除软件 + 没用的依赖 (保留配置文件)</span>
+</span></span><span class="line"><span class="cl">sudo pacman -Rs gimp
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 🔴 [不推荐] 仅删除软件本身 (依赖和配置全留着，制造垃圾)</span>
+</span></span><span class="line"><span class="cl">sudo pacman -R gimp
+</span></span></code></pre></div><h3 id="32-彻底清理-spring-cleaning">3.2 彻底清理 (Spring Cleaning)<a hidden class="anchor" aria-hidden="true" href="#32-彻底清理-spring-cleaning">#</a></h3>
+<p>Arch 不会自动删除旧包，缓存会无限膨胀。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 1. 清理“孤儿包” (曾经作为依赖被安装，现在没人要了)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 解释：pacman -Qtdq 列出孤儿名，pacman -Rns 删除它们</span>
+</span></span><span class="line"><span class="cl">sudo pacman -Rns <span class="k">$(</span>pacman -Qtdq<span class="k">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 2. 清理缓存 (释放硬盘空间)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 删除所有旧版本的包，只保留当前安装的那个版本</span>
+</span></span><span class="line"><span class="cl">sudo pacman -Sc
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 3. 清空缓存 (极端情况)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 删除缓存文件夹里的所有东西 (警告：删了就没法降级了)</span>
+</span></span><span class="line"><span class="cl">sudo pacman -Scc
+</span></span></code></pre></div><hr>
+<h2 id="-4-查询与搜索-query">🔍 4. 查询与搜索 (Query)<a hidden class="anchor" aria-hidden="true" href="#-4-查询与搜索-query">#</a></h2>
+<p>Pacman 的数据库分两部分：<strong>本地 (Local)</strong> 和 <strong>远程 (Sync)</strong>。</p>
+<h3 id="41-查远程-搜软件">4.1 查远程 (搜软件)<a hidden class="anchor" aria-hidden="true" href="#41-查远程-搜软件">#</a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 搜索软件 (支持模糊搜索)</span>
+</span></span><span class="line"><span class="cl">pacman -Ss 关键词  
+</span></span><span class="line"><span class="cl"><span class="c1"># 例: pacman -Ss browser</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看远程软件的详细信息 (依赖、大小、构建日期)</span>
+</span></span><span class="line"><span class="cl">pacman -Si 软件名
+</span></span></code></pre></div><h3 id="42-查本地-已安装">4.2 查本地 (已安装)<a hidden class="anchor" aria-hidden="true" href="#42-查本地-已安装">#</a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 搜索已安装的软件</span>
+</span></span><span class="line"><span class="cl">pacman -Qs 关键词
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看已安装软件的详细信息</span>
+</span></span><span class="line"><span class="cl">pacman -Qi 软件名
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 列出软件的所有文件路径 (它到底装哪去了？)</span>
+</span></span><span class="line"><span class="cl">pacman -Ql 软件名
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 🔥 法医鉴定 (Who owns this file?)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 查某个文件属于哪个软件包 (排错神器)</span>
+</span></span><span class="line"><span class="cl">pacman -Qo /usr/bin/vim
+</span></span><span class="line"><span class="cl"><span class="c1"># 输出: /usr/bin/vim is owned by vim 9.0.xxxx</span>
+</span></span></code></pre></div><h3 id="43-依赖树分析">4.3 依赖树分析<a hidden class="anchor" aria-hidden="true" href="#43-依赖树分析">#</a></h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 查看它依赖谁</span>
+</span></span><span class="line"><span class="cl">pactree 软件名
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 查看谁依赖它 (反向查询，卸载前看看有没有风险)</span>
+</span></span><span class="line"><span class="cl">pactree -r 软件名
+</span></span></code></pre></div><hr>
+<h2 id="-5-故障排除-troubleshooting">🛠️ 5. 故障排除 (Troubleshooting)<a hidden class="anchor" aria-hidden="true" href="#-5-故障排除-troubleshooting">#</a></h2>
+<h3 id="51-数据库锁定-failed-to-init-transaction">5.1 数据库锁定 (Failed to init transaction)<a hidden class="anchor" aria-hidden="true" href="#51-数据库锁定-failed-to-init-transaction">#</a></h3>
+<ul>
+<li><strong>场景</strong>: 更新中途断电或强制关闭终端，再次运行提示 <code>db.lck exists</code>。</li>
+<li><strong>解决</strong>:
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo rm /var/lib/pacman/db.lck
+</span></span></code></pre></div></li>
+</ul>
+<h3 id="52-签名信任错误-pgp-signature-unknown-trust">5.2 签名信任错误 (PGP Signature unknown trust)<a hidden class="anchor" aria-hidden="true" href="#52-签名信任错误-pgp-signature-unknown-trust">#</a></h3>
+<ul>
+<li><strong>场景</strong>: 很久没更新，提示签名无效或损坏。</li>
+<li><strong>原因</strong>: Arch 的密钥环 (Keyring) 更新非常频繁，你的本地密钥过期了。</li>
+<li><strong>解决</strong>:
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 1. 先单独更新密钥环</span>
+</span></span><span class="line"><span class="cl">sudo pacman -S archlinux-keyring
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 2. 再更新系统</span>
+</span></span><span class="line"><span class="cl">sudo pacman -Syu
+</span></span></code></pre></div></li>
+</ul>
+<h3 id="53-文件冲突-exists-in-filesystem">5.3 文件冲突 (Exists in filesystem)<a hidden class="anchor" aria-hidden="true" href="#53-文件冲突-exists-in-filesystem">#</a></h3>
+<ul>
+<li><strong>场景</strong>: 提示 <code>/usr/bin/test exists in filesystem</code>。</li>
+<li><strong>原因</strong>: 这个文件是你手动复制进去的，不属于 pacman 数据库，pacman 不敢覆盖。</li>
+<li><strong>解决</strong>:
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># 强制覆盖该文件</span>
+</span></span><span class="line"><span class="cl">sudo pacman -Syu --overwrite /usr/bin/test
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 或者强制覆盖所有冲突 (慎用)</span>
+</span></span><span class="line"><span class="cl">sudo pacman -Syu --overwrite <span class="s2">&#34;*&#34;</span>
+</span></span></code></pre></div></li>
+</ul>
+<hr>
+<h2 id="-6-性能优化-pacmanconf">⚙️ 6. 性能优化 (pacman.conf)<a hidden class="anchor" aria-hidden="true" href="#-6-性能优化-pacmanconf">#</a></h2>
+<p>建议编辑 <code>/etc/pacman.conf</code> 开启以下现代功能。</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-ini" data-lang="ini"><span class="line"><span class="cl"><span class="c1"># sudo vim /etc/pacman.conf</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">[options]</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 🌈 开启彩色输出</span>
+</span></span><span class="line"><span class="cl"><span class="na">Color</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 🍬 开启吃豆人进度条彩蛋</span>
+</span></span><span class="line"><span class="cl"><span class="na">ILoveCandy</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 🚀 开启并行下载 (核心优化！)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 默认是单线程，改成 5 后下载速度快 5 倍</span>
+</span></span><span class="line"><span class="cl"><span class="na">ParallelDownloads</span> <span class="o">=</span> <span class="s">5</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># 🚫 忽略升级 (锁版本)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># 如果你不想更新内核或显卡驱动，填在这里</span>
+</span></span><span class="line"><span class="cl"><span class="na">IgnorePkg</span> <span class="o">=</span> <span class="s">linux linux-headers</span>
+</span></span></code></pre></div><hr>
+<h2 id="-附录pacman-vs-yay-aur助手">🆚 附录：Pacman vs Yay (AUR助手)<a hidden class="anchor" aria-hidden="true" href="#-附录pacman-vs-yay-aur助手">#</a></h2>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: left">动作</th>
+          <th style="text-align: left">官方命令 (Pacman)</th>
+          <th style="text-align: left">AUR 助手 (Yay)</th>
+          <th style="text-align: left">区别</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left"><strong>系统更新</strong></td>
+          <td style="text-align: left"><code>sudo pacman -Syu</code></td>
+          <td style="text-align: left"><code>yay</code></td>
+          <td style="text-align: left">Yay 会同时检查 AUR 更新</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>安装软件</strong></td>
+          <td style="text-align: left"><code>sudo pacman -S name</code></td>
+          <td style="text-align: left"><code>yay -S name</code></td>
+          <td style="text-align: left">Yay 能装 AUR 里的软件</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>搜索</strong></td>
+          <td style="text-align: left"><code>pacman -Ss name</code></td>
+          <td style="text-align: left"><code>yay -Ss name</code></td>
+          <td style="text-align: left">Yay 同时搜官方库+AUR</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>清理孤儿</strong></td>
+          <td style="text-align: left"><code>sudo pacman -Rns $(...)</code></td>
+          <td style="text-align: left"><code>yay -Yc</code></td>
+          <td style="text-align: left">Yay 命令更短</td>
+      </tr>
+      <tr>
+          <td style="text-align: left"><strong>打印统计</strong></td>
+          <td style="text-align: left">无</td>
+          <td style="text-align: left"><code>yay -Ps</code></td>
+          <td style="text-align: left">查看安装数量和占用空间</td>
+      </tr>
+  </tbody>
+</table>
+<hr>
+<h2 id="-极简速查表-cheat-sheet">📝 极简速查表 (Cheat Sheet)<a hidden class="anchor" aria-hidden="true" href="#-极简速查表-cheat-sheet">#</a></h2>
+<ul>
+<li><strong>更新系统</strong>: <code>yay</code></li>
+<li><strong>装软件</strong>: <code>sudo pacman -S xxx</code></li>
+<li><strong>删软件</strong>: <code>sudo pacman -Rns xxx</code></li>
+<li><strong>清理垃圾</strong>: <code>sudo pacman -Sc</code></li>
+<li><strong>这文件是谁的?</strong>: <code>pacman -Qo 文件路径</code></li>
+</ul>
+
+
+  </div>
+
+  <footer class="post-footer">
+    <ul class="post-tags">
+    </ul>
+<nav class="paginav">
+  <a class="next" href="https://blog.luxrime.top/posts/test-deploy/">
+    <span class="title">Next »</span>
+    <br>
+    <span>Firewalld 配置指南</span>
+  </a>
+</nav>
+
+  </footer>
+</article>
+    </main>
+    
+<footer class="footer">
+        <span>&copy; 2026 <a href="https://blog.luxrime.top/">RookieIO&#39;s Tech Lab</a></span> · 
+
+    <span>
+        Powered by
+        <a href="https://gohugo.io/" rel="noopener noreferrer" target="_blank">Hugo</a> &
+        <a href="https://github.com/adityatelange/hugo-PaperMod/" rel="noopener" target="_blank">PaperMod</a>
+    </span>
+</footer>
+<a href="#top" aria-label="go to top" title="Go to Top (Alt + G)" class="top-link" id="top-link" accesskey="g">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 12 6" fill="currentColor">
+        <path d="M12 6H0l6-6z" />
+    </svg>
+</a>
+
+<script>
+    let menu = document.getElementById('menu');
+    if (menu) {
+        
+        const scrollPosition = localStorage.getItem("menu-scroll-position");
+        if (scrollPosition) {
+            menu.scrollLeft = parseInt(scrollPosition, 10);
+        }
+        
+        menu.onscroll = function () {
+            localStorage.setItem("menu-scroll-position", menu.scrollLeft);
+        }
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener("click", function (e) {
+            e.preventDefault();
+            var id = this.getAttribute("href").substr(1);
+            if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView({
+                    behavior: "smooth"
+                });
+            } else {
+                document.querySelector(`[id='${decodeURIComponent(id)}']`).scrollIntoView();
+            }
+            if (id === "top") {
+                history.replaceState(null, null, " ");
+            } else {
+                history.pushState(null, null, `#${id}`);
+            }
+        });
+    });
+
+</script>
+<script>
+    var mybutton = document.getElementById("top-link");
+    window.onscroll = function () {
+        if (document.body.scrollTop > 800 || document.documentElement.scrollTop > 800) {
+            mybutton.style.visibility = "visible";
+            mybutton.style.opacity = "1";
+        } else {
+            mybutton.style.visibility = "hidden";
+            mybutton.style.opacity = "0";
+        }
+    };
+
+</script>
+<script>
+    document.getElementById("theme-toggle").addEventListener("click", () => {
+        const html = document.querySelector("html");
+        if (html.dataset.theme === "dark") {
+            html.dataset.theme = 'light';
+            localStorage.setItem("pref-theme", 'light');
+        } else {
+            html.dataset.theme = 'dark';
+            localStorage.setItem("pref-theme", 'dark');
+        }
+    })
+
+</script>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+</body>
+
+</html>

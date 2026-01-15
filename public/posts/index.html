@@ -1,25 +1,25 @@
 <!DOCTYPE html>
 <html lang="en" dir="auto" data-theme="auto">
 
-<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script><meta charset="utf-8">
+<head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="robots" content="noindex, nofollow">
+<meta name="robots" content="index, follow">
 <title>笔记 | RookieIO&#39;s Tech Lab</title>
 <meta name="keywords" content="">
 <meta name="description" content="折腾笔记">
 <meta name="author" content="">
-<link rel="canonical" href="http://localhost:1313/posts/">
+<link rel="canonical" href="https://blog.luxrime.top/posts/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.00b861ce567f308b3d720986b5361bf4f3df0c2c45fa85c2c6c5e7d8cbeff271.css" integrity="sha256-ALhhzlZ/MIs9cgmGtTYb9PPfDCxF&#43;oXCxsXn2Mvv8nE=" rel="preload stylesheet" as="style">
-<link rel="icon" href="http://localhost:1313/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="http://localhost:1313/favicon-32x32.png">
-<link rel="apple-touch-icon" href="http://localhost:1313/apple-touch-icon.png">
-<link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
+<link rel="icon" href="https://blog.luxrime.top/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="https://blog.luxrime.top/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="https://blog.luxrime.top/favicon-32x32.png">
+<link rel="apple-touch-icon" href="https://blog.luxrime.top/apple-touch-icon.png">
+<link rel="mask-icon" href="https://blog.luxrime.top/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/posts/index.xml" title="rss">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/posts/">
+<link rel="alternate" type="application/rss+xml" href="https://blog.luxrime.top/posts/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="https://blog.luxrime.top/posts/">
 <noscript>
     <style>
         #theme-toggle,
@@ -71,13 +71,37 @@
         document.querySelector("html").dataset.theme = 'light';
     }
 
+</script><meta property="og:url" content="https://blog.luxrime.top/posts/">
+  <meta property="og:site_name" content="RookieIO&#39;s Tech Lab">
+  <meta property="og:title" content="笔记">
+  <meta property="og:description" content="折腾笔记">
+  <meta property="og:locale" content="zh-cn">
+  <meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="笔记">
+<meta name="twitter:description" content="折腾笔记">
+
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position":  1 ,
+      "name": "笔记",
+      "item": "https://blog.luxrime.top/posts/"
+    }
+  ]
+}
 </script>
 </head>
 <body class="list" id="top">
     <header class="header">
     <nav class="nav">
         <div class="logo">
-            <a href="http://localhost:1313/" accesskey="h" title="RookieIO&#39;s Tech Lab (Alt + H)">RookieIO&#39;s Tech Lab</a>
+            <a href="https://blog.luxrime.top/" accesskey="h" title="RookieIO&#39;s Tech Lab (Alt + H)">RookieIO&#39;s Tech Lab</a>
             <div class="logo-switches">
                 <button id="theme-toggle" accesskey="t" title="(Alt + T)" aria-label="Toggle theme">
                     <svg id="moon" xmlns="http://www.w3.org/2000/svg" width="24" height="18" viewBox="0 0 24 24"
@@ -103,12 +127,12 @@
         </div>
         <ul id="menu">
             <li>
-                <a href="http://localhost:1313/posts/" title="文章">
+                <a href="https://blog.luxrime.top/posts/" title="文章">
                     <span class="active">文章</span>
                 </a>
             </li>
             <li>
-                <a href="http://localhost:1313/search/" title="搜索">
+                <a href="https://blog.luxrime.top/search/" title="搜索">
                     <span>搜索</span>
                 </a>
             </li>
@@ -127,6 +151,20 @@
 
 <article class="post-entry"> 
   <header class="entry-header">
+    <h2 class="entry-hint-parent">Pacman包管理
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>📦 Arch Linux 包管理器 (Pacman) 权威运维手册 属性 详细说明 核心程序 pacman 配置文件 /etc/pacman.conf 镜像列表 /etc/pacman.d/mirrorlist 缓存路径 /var/cache/pacman/pkg/ 文档版本 v3.0 (进阶详细版) 🛑 1. 安全红线 (The “Do Nots”) 在操作前，请刻在脑子里，否则极易导致系统崩溃（滚挂）。
+❌ 禁忌一：禁止部分更新 (Partial Upgrades) 错误操作: pacman -Sy firefox (只同步数据库，然后只安装 Firefox) 后果: 你的数据库是最新的，但系统里的核心库（如 glibc）是旧的。新 Firefox 调用新库时，因为找不到而崩溃。 ✅ 正确做法: 永远同步并更新整个系统。 sudo pacman -Syu firefox ❌ 禁忌二：强制忽略依赖 错误操作: pacman -Rdd 软件名 后果: 强行删除了被其他软件依赖的包，导致其他软件打不开。 ✅ 正确做法: 除非你非常清楚你在修 bug，否则只用 -Rs 或 -Rns。 ⬇️ 2. 安装与系统更新 (Install &amp; Update) 主参数: -S (Sync)
+...</p>
+  </div>
+  <footer class="entry-footer"><span title='2026-01-15 11:57:29 +0800 CST'>January 15, 2026</span>&nbsp;·&nbsp;<span>3 min</span></footer>
+  <a class="entry-link" aria-label="post link to Pacman包管理" href="https://blog.luxrime.top/posts/pacman_qperations/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
     <h2 class="entry-hint-parent">Firewalld 配置指南
     </h2>
   </header>
@@ -139,7 +177,7 @@ Runtime (内存中): 修改立刻生效，但重启后丢失。用于测试规�
 ...</p>
   </div>
   <footer class="entry-footer"><span title='2026-01-15 09:02:47 +0800 CST'>January 15, 2026</span>&nbsp;·&nbsp;<span>3 min</span></footer>
-  <a class="entry-link" aria-label="post link to Firewalld 配置指南" href="http://localhost:1313/posts/test-deploy/"></a>
+  <a class="entry-link" aria-label="post link to Firewalld 配置指南" href="https://blog.luxrime.top/posts/test-deploy/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -151,7 +189,7 @@ Runtime (内存中): 修改立刻生效，但重启后丢失。用于测试规�
     <p>GitHub 搜索语法完全指南（含实用示例） 一、基础搜索语法 1. 关键词搜索 python：搜索所有包含 “python” 的仓库/代码 &#34;machine learning&#34;：精确匹配短语 “machine learning” docker -container：搜索包含 docker 但不含 container 的结果 2. 范围限定 in:name flask：只在仓库名称中搜索 “flask” in:description web framework：只在仓库描述中搜索 in:readme &#34;quick start&#34;：只在 README 文件中搜索 repo:vuejs/vue：仅在指定仓库中搜索 二、仓库搜索技巧 1. 属性筛选 stars:&gt;1000：星标超过 1000 的仓库 forks:&gt;500：Fork 数超过 500 的仓库 size:&gt;10000：大小超过 10MB 的仓库 license:mit：MIT 许可证的仓库 archived:false：未归档的活跃仓库 2. 时间范围筛选 pushed:&gt;2024-01-01：2024 年后更新过的仓库 created:2023-01-01..2023-12-31：2023 年创建的仓库 updated:&gt;2024-06-01：最近 30 天更新的仓库 3. 实用案例 查找 Python 高星项目 in:name python stars:&gt;5000 查找近半年更新的 AI 项目 in:description AI pushed:&gt;2024-01-01 查找 MIT 许可的 Web 框架 in:description &#34;web framework&#34; license:mit 查找大型 Java 项目 language:java size:&gt;10000 三、代码搜索技巧 1. 文件属性筛选 language:python：Python 代码 filename:main.py：文件名为 main.py path:/src/：src 目录下的文件 extension:.js：JavaScript 文件 2. 代码内容搜索 &#34;def calculate(&#34;：包含特定函数定义 &#34;import React from &#39;react&#39;&#34;：包含精确导入语句 NOT &#34;TODO&#34;：排除包含 TODO 的文件 3. 实用案例 查找 Flask 应用入口文件 language:python filename:app.py &#34;from flask import Flask&#34; 查找 React 的 useState 用法 language:javascript &#34;import { useState } from &#39;react&#39;&#34; 查找所有 Dockerfile filename:Dockerfile 查找测试文件中的断言 path:/test/ &#34;assert.equal(&#34; 查找配置中的数据库连接 &#34;db.connect(&#34; extension:.env 四、用户/组织搜索 user:torvalds：特定用户 org:google：特定组织 followers:&gt;1000：粉丝超过 1000 location:china：来自中国的用户 repos:&gt;50：拥有 50&#43; 仓库 实用案例 查找中国的 Python 开发者 location:china language:python 查找顶级开发者 followers:&gt;10000 查找 Google 的 AI 项目 org:google in:name AI 查找拥有大量 JS 仓库的开发者 language:javascript repos:&gt;30 五、高级组合搜索 近 1 年更新的 Python 机器学习库，星标 &gt;1k in:description &#34;machine learning&#34; language:python stars:&gt;1000 pushed:&gt;2023-01-01 查找 JavaScript 的 TODO 注释（排除 React 项目） language:javascript &#34;TODO&#34; -react 查找 Go 语言 CLI 工具 in:description &#34;command line&#34; language:go 查找最近一周更新的 TypeScript 工具库 language:typescript in:description &#34;utility library&#34; pushed:&gt;2024-06-24 查找需要帮助的项目 in:readme &#34;help wanted&#34; OR &#34;good first issue&#34; 六、常见场景解决方案 1. 学习资源查找 带教程的 Python 项目 in:readme tutorial language:python 算法实现集合 in:name algorithms OR &#34;data structures&#34; 机器学习示例项目 in:path examples &#34;machine learning&#34; 2. 项目研究 新框架（近 3 个月创建） in:name framework created:&gt;2024-04-01 活跃区块链项目 in:description blockchain stars:&gt;100 pushed:&gt;2024-05-01 3. 贡献机会 需要帮助的项目 in:readme &#34;help wanted&#34; OR &#34;good first issue&#34; 缺少文档的项目 in:description &#34;documentation&#34; NOT filename:README.md 4. 代码片段定位 Python 错误处理示例 language:python &#34;try:&#34; &#34;except&#34; path:/examples/ React 组件使用 filename:*.jsx &#34;import Button from&#34; 七、语法速查表 类别 语法 示例 仓库 in:name in:name flask 描述 in:description in:description API 代码 language: language:typescript 文件 filename: filename:package.json 星标 stars:N stars:&gt;1000 Fork forks:N forks:&gt;500 时间 pushed:YYYY-MM-DD pushed:&gt;2024-01-01 大小 size:N size:&gt;5000 排除 - 或 NOT python -django 八、专业提示 保存搜索：登录 GitHub 后可以保存常用搜索条件。 排序结果：使用 sort:stars 或 sort:updated 排序。 趋势发现：pushed:&gt;YYYY-MM-DD &#43; stars:&gt;100 找新兴项目。 组合技巧：最多可组合 5 个条件进行精准搜索。 高级界面：使用 GitHub 高级搜索 可视化构建查询。 </p>
   </div>
   <footer class="entry-footer"><span title='2025-11-18 13:36:41 +0800 CST'>November 18, 2025</span>&nbsp;·&nbsp;<span>2 min</span></footer>
-  <a class="entry-link" aria-label="post link to GitHub 使用方法" href="http://localhost:1313/posts/github%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/"></a>
+  <a class="entry-link" aria-label="post link to GitHub 使用方法" href="https://blog.luxrime.top/posts/github%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/"></a>
 </article>
 
 <article class="post-entry"> 
@@ -177,12 +215,28 @@ Runtime (内存中): 修改立刻生效，但重启后丢失。用于测试规�
 ...</p>
   </div>
   <footer class="entry-footer"><span title='2025-11-12 00:00:00 +0000 UTC'>November 12, 2025</span>&nbsp;·&nbsp;<span>2 min</span></footer>
-  <a class="entry-link" aria-label="post link to Linux中文件系统各个目录的作用" href="http://localhost:1313/posts/my-first-post/"></a>
+  <a class="entry-link" aria-label="post link to Linux中文件系统各个目录的作用" href="https://blog.luxrime.top/posts/my-first-post/"></a>
+</article>
+
+<article class="post-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p> title: “Arch Linux 安装指南：从系统构建到图形环境” date: 2026-01-15T15:30:00&#43;08:00 draft: false description: “Arch Linux 安装教程。” tags: [“Linux”, “Arch Linux”, “KDE”, “Installation”]
+🛠 Arch Linux 权威安装指南 (完整版) 欢迎来到 Arch Linux 的世界。本手册将带你完成从基础系统联网、分区到安装图形界面（GUI）及常用软件的全过程。
+1. 环境准备与联网 在启动后的 Live 环境中，首先需要确保网络通畅。
+# 1. 如果是无线网络，使用 iwd 联网 iwctl # 进入交互式联网工具 # 在 iwctl 界面中依次执行： # station wlan0 scan # 扫描网络 # station wlan0 get-networks # 列出可用网络 # station wlan0 connect &lt;SSID&gt; # 连接 WiFi # quit # 退出工具 # 2. 检查网络连通性 ping -c 4 google.com # 发送 4 个 ICMP 包测试网络 # 3. 更新系统时间（防止证书校验失败） timedatectl set-ntp true # 开启网络时间同步 2. 磁盘分区与格式化 我们将采用主流的 UEFI &#43; GPT 结构。
+...</p>
+  </div>
+  <footer class="entry-footer"><span>3 min</span></footer>
+  <a class="entry-link" aria-label="post link to " href="https://blog.luxrime.top/posts/archlinux_install/"></a>
 </article>
     </main>
     
 <footer class="footer">
-        <span>&copy; 2026 <a href="http://localhost:1313/">RookieIO&#39;s Tech Lab</a></span> · 
+        <span>&copy; 2026 <a href="https://blog.luxrime.top/">RookieIO&#39;s Tech Lab</a></span> · 
 
     <span>
         Powered by
