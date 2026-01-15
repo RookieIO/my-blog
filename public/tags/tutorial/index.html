@@ -5,11 +5,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="robots" content="noindex, nofollow">
-<title>Tags | RookieIO&#39;s Tech Lab</title>
+<title>Tutorial | RookieIO&#39;s Tech Lab</title>
 <meta name="keywords" content="">
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="canonical" href="http://localhost:1313/tags/">
+<link rel="canonical" href="http://localhost:1313/tags/tutorial/">
 <link crossorigin="anonymous" href="/assets/css/stylesheet.00b861ce567f308b3d720986b5361bf4f3df0c2c45fa85c2c6c5e7d8cbeff271.css" integrity="sha256-ALhhzlZ/MIs9cgmGtTYb9PPfDCxF&#43;oXCxsXn2Mvv8nE=" rel="preload stylesheet" as="style">
 <link rel="icon" href="http://localhost:1313/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="http://localhost:1313/favicon-16x16.png">
@@ -18,8 +18,8 @@
 <link rel="mask-icon" href="http://localhost:1313/safari-pinned-tab.svg">
 <meta name="theme-color" content="#2e2e33">
 <meta name="msapplication-TileColor" content="#2e2e33">
-<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/tags/index.xml" title="rss">
-<link rel="alternate" hreflang="en" href="http://localhost:1313/tags/">
+<link rel="alternate" type="application/rss+xml" href="http://localhost:1313/tags/tutorial/index.xml" title="rss">
+<link rel="alternate" hreflang="en" href="http://localhost:1313/tags/tutorial/">
 <noscript>
     <style>
         #theme-toggle,
@@ -115,22 +115,24 @@
         </ul>
     </nav>
 </header>
-<main class="main">
+<main class="main"> 
 <header class="page-header">
-    <h1>Tags</h1>
+  <h1>
+    Tutorial
+  </h1>
 </header>
 
-<ul class="terms-tags">
-    <li>
-        <a href="http://localhost:1313/tags/github/">GitHub <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="http://localhost:1313/tags/tools/">Tools <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-    <li>
-        <a href="http://localhost:1313/tags/tutorial/">Tutorial <sup><strong><sup>1</sup></strong></sup> </a>
-    </li>
-</ul>
+<article class="post-entry tag-entry"> 
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">GitHub 使用方法
+    </h2>
+  </header>
+  <div class="entry-content">
+    <p>GitHub 搜索语法完全指南（含实用示例） 一、基础搜索语法 1. 关键词搜索 python：搜索所有包含 “python” 的仓库/代码 &#34;machine learning&#34;：精确匹配短语 “machine learning” docker -container：搜索包含 docker 但不含 container 的结果 2. 范围限定 in:name flask：只在仓库名称中搜索 “flask” in:description web framework：只在仓库描述中搜索 in:readme &#34;quick start&#34;：只在 README 文件中搜索 repo:vuejs/vue：仅在指定仓库中搜索 二、仓库搜索技巧 1. 属性筛选 stars:&gt;1000：星标超过 1000 的仓库 forks:&gt;500：Fork 数超过 500 的仓库 size:&gt;10000：大小超过 10MB 的仓库 license:mit：MIT 许可证的仓库 archived:false：未归档的活跃仓库 2. 时间范围筛选 pushed:&gt;2024-01-01：2024 年后更新过的仓库 created:2023-01-01..2023-12-31：2023 年创建的仓库 updated:&gt;2024-06-01：最近 30 天更新的仓库 3. 实用案例 查找 Python 高星项目 in:name python stars:&gt;5000 查找近半年更新的 AI 项目 in:description AI pushed:&gt;2024-01-01 查找 MIT 许可的 Web 框架 in:description &#34;web framework&#34; license:mit 查找大型 Java 项目 language:java size:&gt;10000 三、代码搜索技巧 1. 文件属性筛选 language:python：Python 代码 filename:main.py：文件名为 main.py path:/src/：src 目录下的文件 extension:.js：JavaScript 文件 2. 代码内容搜索 &#34;def calculate(&#34;：包含特定函数定义 &#34;import React from &#39;react&#39;&#34;：包含精确导入语句 NOT &#34;TODO&#34;：排除包含 TODO 的文件 3. 实用案例 查找 Flask 应用入口文件 language:python filename:app.py &#34;from flask import Flask&#34; 查找 React 的 useState 用法 language:javascript &#34;import { useState } from &#39;react&#39;&#34; 查找所有 Dockerfile filename:Dockerfile 查找测试文件中的断言 path:/test/ &#34;assert.equal(&#34; 查找配置中的数据库连接 &#34;db.connect(&#34; extension:.env 四、用户/组织搜索 user:torvalds：特定用户 org:google：特定组织 followers:&gt;1000：粉丝超过 1000 location:china：来自中国的用户 repos:&gt;50：拥有 50&#43; 仓库 实用案例 查找中国的 Python 开发者 location:china language:python 查找顶级开发者 followers:&gt;10000 查找 Google 的 AI 项目 org:google in:name AI 查找拥有大量 JS 仓库的开发者 language:javascript repos:&gt;30 五、高级组合搜索 近 1 年更新的 Python 机器学习库，星标 &gt;1k in:description &#34;machine learning&#34; language:python stars:&gt;1000 pushed:&gt;2023-01-01 查找 JavaScript 的 TODO 注释（排除 React 项目） language:javascript &#34;TODO&#34; -react 查找 Go 语言 CLI 工具 in:description &#34;command line&#34; language:go 查找最近一周更新的 TypeScript 工具库 language:typescript in:description &#34;utility library&#34; pushed:&gt;2024-06-24 查找需要帮助的项目 in:readme &#34;help wanted&#34; OR &#34;good first issue&#34; 六、常见场景解决方案 1. 学习资源查找 带教程的 Python 项目 in:readme tutorial language:python 算法实现集合 in:name algorithms OR &#34;data structures&#34; 机器学习示例项目 in:path examples &#34;machine learning&#34; 2. 项目研究 新框架（近 3 个月创建） in:name framework created:&gt;2024-04-01 活跃区块链项目 in:description blockchain stars:&gt;100 pushed:&gt;2024-05-01 3. 贡献机会 需要帮助的项目 in:readme &#34;help wanted&#34; OR &#34;good first issue&#34; 缺少文档的项目 in:description &#34;documentation&#34; NOT filename:README.md 4. 代码片段定位 Python 错误处理示例 language:python &#34;try:&#34; &#34;except&#34; path:/examples/ React 组件使用 filename:*.jsx &#34;import Button from&#34; 七、语法速查表 类别 语法 示例 仓库 in:name in:name flask 描述 in:description in:description API 代码 language: language:typescript 文件 filename: filename:package.json 星标 stars:N stars:&gt;1000 Fork forks:N forks:&gt;500 时间 pushed:YYYY-MM-DD pushed:&gt;2024-01-01 大小 size:N size:&gt;5000 排除 - 或 NOT python -django 八、专业提示 保存搜索：登录 GitHub 后可以保存常用搜索条件。 排序结果：使用 sort:stars 或 sort:updated 排序。 趋势发现：pushed:&gt;YYYY-MM-DD &#43; stars:&gt;100 找新兴项目。 组合技巧：最多可组合 5 个条件进行精准搜索。 高级界面：使用 GitHub 高级搜索 可视化构建查询。 </p>
+  </div>
+  <footer class="entry-footer"><span title='2025-11-18 13:36:41 +0800 CST'>November 18, 2025</span>&nbsp;·&nbsp;<span>2 min</span></footer>
+  <a class="entry-link" aria-label="post link to GitHub 使用方法" href="http://localhost:1313/posts/github%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/"></a>
+</article>
     </main>
     
 <footer class="footer">

@@ -1,0 +1,45 @@
+/* --- 强制覆盖 PaperMod 默认样式，实现 GitHub 纯白极简风格 --- */
+
+:root {
+    /* 1. 底色改成纯白色 */
+    --gh-bg: #ffffff !important;
+    /* GitHub 官方文字颜色值 */
+    --gh-text: #24292e !important;
+    /* GitHub 官方边框颜色值 */
+    --gh-border: #e1e4e8 !important;
+}
+
+/* 2. 强制代码块容器变成纯白底色 */
+.post-content .highlight,
+.post-content pre {
+    background-color: var(--gh-bg) !important;
+    color: var(--gh-text) !important;
+    border: 1px solid var(--gh-border);
+    border-radius: 6px; /* 圆角 */
+}
+
+/* 3. 修正代码块内部的文字颜色 */
+.post-content pre code {
+    color: var(--gh-text) !important;
+    background-color: transparent !important;
+}
+
+/* 4. 【核心修改】隐藏行号 */
+/* 直接把包含行号的表格单元格隐藏掉 */
+.post-content .highlight .lntable .lntd:first-child {
+    display: none !important;
+}
+
+/* 5. 修正复制按钮 */
+.copy-code {
+    color: #555 !important;
+    background-color: #ffffff !important;
+    border: 1px solid #ddd;
+}
+
+/* 6. 鼠标选中代码时的背景色 (GitHub 同款淡蓝色) */
+.post-content pre code::selection,
+.post-content pre::selection,
+.post-content .highlight::selection {
+    background-color: #c8c8fa !important;
+}

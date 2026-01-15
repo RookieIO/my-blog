@@ -8,7 +8,10 @@ theme = "PaperMod"
     ShowReadingTime = true # 显示阅读时间
     ShowShareButtons = false # 只有国内也没人用国外的分享，关掉清爽
     ShowPostNavLinks = true # 显示上一篇/下一篇
+ # 👇 核心开关：开启代码块的复制按钮
+    ShowCodeCopyButtons = true
     
+
     [params.homeInfoParams]
         Title = "Hi there 👋"
         Content = "欢迎来到我的 Arch Linux 学习笔记"
@@ -24,3 +27,18 @@ theme = "PaperMod"
         name = "搜索"
         url = "/search/"
         weight = 20
+
+[markup]
+  [markup.highlight]
+    # 1. 开启代码块功能
+    codeFences = true
+    guessSyntax = true
+    lineNos = false
+    
+    # 2. 核心：指定使用 github 的高亮配色方案（但这只会改变文字颜色）
+    style = "github"
+    
+    # 3. 关键开关：必须设为 false！
+    # 这样 Hugo 才会生成 CSS 类名，让我们下一步的 CSS 文件生效。
+    # 如果是 true，背景色就会被主题锁死。
+    noClasses = false

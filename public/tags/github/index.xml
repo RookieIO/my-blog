@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>GitHub on RookieIO&#39;s Tech Lab</title>
+    <link>http://localhost:1313/tags/github/</link>
+    <description>Recent content in GitHub on RookieIO&#39;s Tech Lab</description>
+    <generator>Hugo -- 0.154.5</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Tue, 18 Nov 2025 13:36:41 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/github/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>GitHub 使用方法</title>
+      <link>http://localhost:1313/posts/github%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</link>
+      <pubDate>Tue, 18 Nov 2025 13:36:41 +0800</pubDate>
+      <guid>http://localhost:1313/posts/github%E4%BD%BF%E7%94%A8%E6%96%B9%E6%B3%95/</guid>
+      <description>GitHub 搜索语法完全指南（含实用示例）</description>
+    </item>
+  </channel>
+</rss>
