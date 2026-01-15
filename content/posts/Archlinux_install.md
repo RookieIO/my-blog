@@ -1,10 +1,11 @@
-___
+---
 title: "Arch Linux 安装指南：从系统构建到图形环境"
 date: 2026-01-15T15:30:00+08:00
 draft: false
 description: "Arch Linux 安装教程。"
 tags: ["Linux", "Arch Linux", "KDE", "Installation"]
-___
+---
+
 
 # 🛠 Arch Linux 权威安装指南 (完整版)
 
