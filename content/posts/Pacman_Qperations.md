@@ -3,13 +3,6 @@ date = '2026-01-15T11:57:29+08:00'
 draft = false
 title = 'Pacman包管理'
 +++
----
-title: "Arch Linux 包管理器 (Pacman) 权威运维手册"
-date: 2026-01-15T14:30:00+08:00
-draft: false
-description: "Arch Linux 核心包管理器 Pacman 的常用命令、安全规范及故障排除指南"
-tags: ["Linux", "Arch", "Pacman", "DevOps"]
----
 
 # 📦 Arch Linux 包管理器 (Pacman) 权威运维手册
 
